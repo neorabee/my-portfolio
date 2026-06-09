@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://rabeeaman.vercel.app/'),
   title: "Rabee Aman Achoth — Software Engineer",
   description:
     "Software Engineering Student building backend systems, developer tools, and software that turns complex ideas into useful products.",
@@ -37,13 +38,13 @@ export const metadata: Metadata = {
         url: "/randomlogo.png",
         width: 1200,
         height: 630,
-        alt: "Rabee Aman Achoth - Software Engineer",
+        alt: "Rabee Aman Achoth: Software Engineer",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rabee Aman Achoth — Software Engineer",
+    title: "Rabee Aman Achoth: Software Engineer",
     description:
       "Building backend systems, developer tools, and software that turns complex ideas into useful products.",
     images: ["/randomlogo.png"],
