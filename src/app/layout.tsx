@@ -32,6 +32,13 @@ export const metadata: Metadata = {
     description:
       "Software Engineering Student building backend systems, developer tools, and software that turns complex ideas into useful products.",
     type: "website",
+    images: [
+      {
+        url: "/public/randomlogo.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
