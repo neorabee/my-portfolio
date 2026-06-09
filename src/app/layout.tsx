@@ -34,9 +34,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/public/randomlogo.png",
+        url: "/randomlogo.png",
         width: 1200,
         height: 630,
+        alt: "Rabee Aman Achoth - Software Engineer",
       },
     ],
   },
@@ -45,6 +46,7 @@ export const metadata: Metadata = {
     title: "Rabee Aman Achoth — Software Engineer",
     description:
       "Building backend systems, developer tools, and software that turns complex ideas into useful products.",
+    images: ["/randomlogo.png"],
   },
 };
 
