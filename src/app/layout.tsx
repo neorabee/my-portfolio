@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SmoothScroll } from "@/components/SmoothScroll";
 import ParticleBackground from "@/components/ParticleBackground";
 
 const geistSans = Geist({
@@ -55,7 +54,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-black relative text-foreground selection:bg-accent/30 selection:text-white">
         <ParticleBackground />
         <div className="relative z-10 flex flex-col min-h-screen">
-          <SmoothScroll>{children}</SmoothScroll>
+          {children}
         </div>
       </body>
     </html>

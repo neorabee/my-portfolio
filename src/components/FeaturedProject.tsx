@@ -6,9 +6,17 @@ import FocusReveal from "./FocusReveal";
 
 export default function FeaturedProject() {
   return (
-    <section id="featured" className="py-32 relative overflow-hidden">
+    <section id="projects" className="py-32 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 relative z-10">
         
+        {/* SECTION HEADER */}
+        <FocusReveal className="mb-24 flex flex-col items-center text-center">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="h-px w-12 bg-accent/50" />
+          </div>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight">Projects.</h2>
+        </FocusReveal>
+
         {/* LINUX DASHBOARD CINEMATIC SHOWCASE */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           

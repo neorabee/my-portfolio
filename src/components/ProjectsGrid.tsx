@@ -6,7 +6,7 @@ import FocusReveal from "./FocusReveal";
 
 export default function ProjectsGrid() {
   return (
-    <section id="projects" className="py-32 relative overflow-hidden">
+    <section id="pengu" className="py-32 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 relative z-10">
         
         {/* PENGU CINEMATIC SHOWCASE */}
