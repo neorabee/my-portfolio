@@ -73,7 +73,7 @@ const content: ContentItem[] = [
 
 export default function Explorations() {
   return (
-    <section id="explorations" className="py-24 relative bg-background">
+    <section id="explorations" className="py-24 relative">
       <div className="mx-auto max-w-6xl px-6 relative z-10">
         
         {/* Section Header */}

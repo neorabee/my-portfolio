@@ -6,7 +6,7 @@ import FocusReveal from "./FocusReveal";
 
 export default function ProjectsGrid() {
   return (
-    <section id="projects" className="py-32 relative bg-background overflow-hidden">
+    <section id="projects" className="py-32 relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 relative z-10">
         
         {/* PENGU CINEMATIC SHOWCASE */}
@@ -148,7 +148,7 @@ export default function ProjectsGrid() {
         </div>
 
         {/* CURRENTLY BUILDING SECTION */}
-        <div className="mt-40 border-t border-white/5 pt-16">
+        <div className="mt-40 border-t border-white/5 pt-6">
           <FocusReveal>
             <div className="flex items-center gap-3 mb-8">
               <GitCommit size={16} className="text-muted" />
@@ -157,9 +157,8 @@ export default function ProjectsGrid() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
-                { name: "Distributed Task Scheduler", desc: "R&D: High-throughput job queues in Go." },
-                { name: "LLM Memory Protocol", desc: "Experiment: Vector embeddings for agent context." },
-                { name: "Personal OS Config", desc: "NixOS dotfiles and system declarations." }
+                { name: "CTF Tracker Extension", desc: "Browser assistance for cybersecurity club - nitc" },
+                { name: "AI CTF Automator", desc: "AI agent that solves CTFs" },
               ].map((item, i) => (
                 <div key={i} className="group border-l-2 border-white/5 pl-4 hover:border-accent/30 transition-colors duration-300">
                   <div className="flex items-center gap-2 mb-1">

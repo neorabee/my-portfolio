@@ -15,7 +15,7 @@ class Particle {
     this.y = Math.random() * height;
     this.vx = (Math.random() - 0.5) * 0.3; // Very slow
     this.vy = (Math.random() - 0.5) * 0.3;
-    this.size = Math.random() * 1.5 + 0.5;
+    this.size = Math.random() * 2 + 0.5;
     this.alpha = Math.random() * 0.5 + 0.1;
   }
 
@@ -66,7 +66,7 @@ export default function ParticleBackground() {
       canvas.width = width;
       canvas.height = height;
       
-      const particleCount = Math.floor((width * height) / 12000); // Responsive count
+      const particleCount = Math.floor((width * height) / 9000); // Responsive count
       particles = Array.from({ length: particleCount }, () => new Particle(width, height));
     };
 
@@ -82,7 +82,7 @@ export default function ParticleBackground() {
       }
       
       // Smoothly interpolate hue
-      currentHue += (targetHue - currentHue) * 0.02;
+      currentHue += Math.random()*(targetHue - currentHue) * 0.02;
 
       particles.forEach((particle) => {
         particle.update(width, height);

@@ -24,7 +24,7 @@ const skillGroups = [
 
 export default function Profile() {
   return (
-    <section id="profile" className="py-32 relative overflow-hidden bg-background">
+    <section id="profile" className="py-32 relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none" />
 
       <div className="mx-auto max-w-6xl px-6 relative z-10">
@@ -46,10 +46,10 @@ export default function Profile() {
                   built with clarity of thought, a deep understanding of the underlying systems, and an obsessive attention to detail.
                 </p>
                 <p>
-                  Currently, I&apos;m building a highly concurrent VM Monitoring Agent in Go to track Linux system metrics, alongside experimenting with LLM-driven agents via a Minecraft AI bot.
+                  Currently, I&apos;m building a real-time CTF Tracking extension for the cybersecurity club at NITC, and also helping build an AI-powered CTF solving bot.
                 </p>
                 <p>
-                  Beyond code, I spend my time exploring science communication—writing about space exploration, physics, and the intersection of technology and human progress.
+                  Beyond code, I spend my time exploring science communication by write about ideas that could shape our future and philosophical abstraction. I also play football, run and read.
                 </p>
               </div>
             </FocusReveal>

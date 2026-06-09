@@ -3,21 +3,44 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "./icons"; // We will add MediumIcon or use an SVG directly if needed.
 
 const navLinks = [
+  { label: "Home", href: "#hero" },
+  { label: "WhoAmI", href: "#profile" },
   { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Writing", href: "#writing" },
-  { label: "About", href: "#about" },
+  { label: "Diversified", href: "#explorations" },
   { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("#hero");
+  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+
+      // Simple active section tracking
+      const sections = navLinks.map(link => link.href.substring(1));
+      let current = "#hero";
+      
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          // If the top of the section is near the top of the viewport
+          if (rect.top <= 150 && rect.bottom >= 150) {
+            current = `#${section}`;
+            break;
+          }
+        }
+      }
+      setActiveSection(current);
+    };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -28,49 +51,80 @@ export default function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ${
           scrolled
-            ? "bg-black/80 backdrop-blur-xl border-b border-border shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+            ? "bg-black/70 backdrop-blur-2xl border-b border-white/5"
             : "bg-transparent"
         }`}
       >
-        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+          
+          {/* LOGO / STATUS */}
           <motion.a
-            href="#"
-            className="text-lg font-semibold tracking-tight text-white flex items-center gap-2"
+            href="#hero"
+            className="text-base font-medium tracking-tight text-white flex items-center gap-3"
             whileHover={{ scale: 1.02 }}
           >
-            <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]" />
+            <div className="relative flex items-center justify-center">
+              <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 z-10" />
+              <div className="absolute w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping opacity-50" />
+            </div>
             <span><span className="text-accent">R</span>abee</span>
-            <span className="text-muted ml-1 text-sm font-normal hidden sm:inline">/sys_admin</span>
           </motion.a>
 
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <motion.a
-                key={link.href}
-                href={link.href}
-                className="relative px-4 py-2 text-sm text-muted-light hover:text-white transition-colors duration-300 rounded-lg group"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <span className="relative z-10">{link.label}</span>
-                <motion.span
-                  className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/5"
-                  layoutId="navbar-hover"
-                />
-              </motion.a>
-            ))}
-            <motion.a
-              href="#contact"
-              className="ml-2 px-5 py-2 text-sm font-mono font-medium rounded-lg bg-accent/10 text-accent-light border border-accent/30 hover:bg-accent/20 hover:border-accent/50 transition-all duration-300 shadow-[0_0_15px_rgba(6,182,212,0.15)]"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              [CONNECT]
-            </motion.a>
+          {/* DESKTOP NAV LINKS */}
+          <div className="hidden md:flex items-center bg-white/[0.03] border border-white/5 p-1 rounded-full relative" onMouseLeave={() => setHoveredSection(null)}>
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href;
+              const isHovered = hoveredSection === link.href;
+              
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onMouseEnter={() => setHoveredSection(link.href)}
+                  className={`relative px-5 py-2 text-sm font-medium transition-colors duration-300 rounded-full z-10 ${
+                    isActive || isHovered ? "text-white" : "text-muted"
+                  }`}
+                >
+                  {link.label}
+                  
+                  {/* Gliding Pill Indicator */}
+                  {(isActive || isHovered) && (
+                    <motion.div
+                      layoutId="nav-pill"
+                      className={`absolute inset-0 rounded-full -z-10 ${
+                        isHovered ? "bg-white/10" : "bg-white/5"
+                      }`}
+                      initial={false}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 30
+                      }}
+                    />
+                  )}
+                </a>
+              );
+            })}
           </div>
 
+          {/* SOCIALS */}
+          <div className="hidden md:flex items-center gap-4">
+            <a href="https://github.com/neorabee" target="_blank" rel="noreferrer" className="text-muted hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
+              <GithubIcon width={18} height={18} />
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-muted hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
+              <LinkedinIcon width={18} height={18} />
+            </a>
+            <a href="https://medium.com/@rabeeaman07" target="_blank" rel="noreferrer" className="text-muted hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 1043.63 592.71" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                <path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.16-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.91-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94" />
+              </svg>
+            </a>
+          </div>
+
+          {/* MOBILE MENU TOGGLE */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden p-2 text-muted-light hover:text-white transition-colors"
@@ -88,7 +142,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl pt-20"
+            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl pt-24"
           >
             <div className="flex flex-col items-center gap-2 p-8">
               {navLinks.map((link, i) => (
@@ -99,21 +153,30 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
                   onClick={() => setMobileOpen(false)}
-                  className="w-full text-center py-4 text-lg text-muted-light hover:text-white transition-colors border-b border-border/50"
+                  className="w-full text-center py-4 text-xl text-muted-light hover:text-white transition-colors border-b border-white/5"
                 >
                   {link.label}
                 </motion.a>
               ))}
-              <motion.a
-                href="#contact"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+              
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ delay: navLinks.length * 0.1 }}
-                onClick={() => setMobileOpen(false)}
-                className="mt-6 px-8 py-3 text-sm font-mono font-medium rounded-lg bg-accent/10 text-accent-light border border-accent/30 shadow-[0_0_15px_rgba(6,182,212,0.15)]"
+                className="mt-8 flex gap-6"
               >
-                [CONNECT]
-              </motion.a>
+                <a href="https://github.com/neorabee" target="_blank" rel="noreferrer" className="text-muted hover:text-white transition-colors p-3 hover:bg-white/5 rounded-full bg-white/5 border border-white/10">
+                  <GithubIcon width={24} height={24} />
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-muted hover:text-white transition-colors p-3 hover:bg-white/5 rounded-full bg-white/5 border border-white/10">
+                  <LinkedinIcon width={24} height={24} />
+                </a>
+                <a href="https://medium.com/@rabeeaman07" target="_blank" rel="noreferrer" className="text-muted hover:text-white transition-colors p-3 hover:bg-white/5 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+                  <svg width="24" height="24" viewBox="0 0 1043.63 592.71" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                    <path d="M588.67 296.36c0 163.67-131.78 296.35-294.33 296.35S0 460 0 296.36 131.78 0 294.34 0s294.33 132.69 294.33 296.36M911.56 296.36c0 154.06-65.89 279-147.17 279s-147.17-124.94-147.17-279 65.88-279 147.16-279 147.17 124.9 147.17 279M1043.63 296.36c0 138-23.17 249.94-51.76 249.94s-51.75-111.91-51.75-249.94 23.17-249.94 51.75-249.94 51.76 111.9 51.76 249.94" />
+                  </svg>
+                </a>
+              </motion.div>
             </div>
           </motion.div>
         )}
