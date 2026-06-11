@@ -3,11 +3,17 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Terminal, Activity, GitCommit, Database, Zap } from "lucide-react";
 import FocusReveal from "./FocusReveal";
+import SectionConcept from "./SectionConcept";
 
 export default function ProjectsGrid() {
   return (
     <section id="pengu" className="py-32 relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 relative z-10">
+      <SectionConcept concept={{ text: "AUTONOMY", size: "14vw", xOffset: "5%", yOffset: "20%", drift: -140, side: "right" }} />
+      <div className="mx-auto max-w-7xl px-6 relative z-10 lg:pr-[22%]">
+        
+        {/* Docking Anchor */}
+        <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
+        <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-accent shadow-[0_0_10px_rgba(14,165,233,0.8)] translate-x-[0.5px]" />
         
         {/* PENGU CINEMATIC SHOWCASE */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">

@@ -7,11 +7,14 @@ import Explorations from "@/components/Explorations";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
+import GlobalRoadmap from "@/components/GlobalRoadmap";
+
 export default function Home() {
   return (
     <>
       <Navbar />
-      <main>
+      <main className="relative">
+        <GlobalRoadmap />
         <Hero />
         <FeaturedProject />
         <ProjectsGrid />

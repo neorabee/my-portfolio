@@ -3,19 +3,17 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Activity } from "lucide-react";
 import FocusReveal from "./FocusReveal";
+import SectionConcept from "./SectionConcept";
 
 export default function FeaturedProject() {
   return (
     <section id="projects" className="py-32 relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 relative z-10">
+      <SectionConcept concept={{ text: "ARCHITECTURE", size: "16vw", xOffset: "-8%", yOffset: "10%", drift: -180, side: "left" }} />
+      <div className="mx-auto max-w-7xl px-6 relative z-10 lg:pl-[22%]">
         
-        {/* SECTION HEADER */}
-        <FocusReveal className="mb-24 flex flex-col items-center text-center">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="h-px w-12 bg-accent/50" />
-          </div>
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight">Projects.</h2>
-        </FocusReveal>
+        {/* Docking Anchor */}
+        <div className="hidden lg:block absolute left-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
+        <div className="hidden lg:block absolute left-[20%] top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-accent shadow-[0_0_10px_rgba(14,165,233,0.8)] -translate-x-[0.5px]" />
 
         {/* LINUX DASHBOARD CINEMATIC SHOWCASE */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">

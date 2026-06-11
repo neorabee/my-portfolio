@@ -1,12 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import FocusReveal from "./FocusReveal";
+import SectionConcept from "./SectionConcept";
 
 export default function Contact() {
   return (
     <section id="contact" className="py-40 relative">
+      <SectionConcept concept={{ text: "DESTINATION", size: "16vw", xOffset: "0%", yOffset: "10%", drift: -120, side: "left" }} />
       <div className="mx-auto max-w-5xl px-6 relative z-10">
         
         <FocusReveal className="flex flex-col md:flex-row gap-16 md:gap-24 items-start">

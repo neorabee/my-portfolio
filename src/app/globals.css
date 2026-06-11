@@ -29,6 +29,20 @@ body {
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
+}
+
+/* Topographic contour background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cellipse cx='200' cy='200' rx='60' ry='45' fill='none' stroke='%2306b6d4' stroke-width='0.5'/%3E%3Cellipse cx='200' cy='200' rx='100' ry='75' fill='none' stroke='%2306b6d4' stroke-width='0.5'/%3E%3Cellipse cx='200' cy='200' rx='150' ry='110' fill='none' stroke='%2306b6d4' stroke-width='0.5'/%3E%3Cellipse cx='200' cy='200' rx='190' ry='145' fill='none' stroke='%2306b6d4' stroke-width='0.4'/%3E%3Cellipse cx='80' cy='350' rx='50' ry='35' fill='none' stroke='%2306b6d4' stroke-width='0.4'/%3E%3Cellipse cx='80' cy='350' rx='90' ry='60' fill='none' stroke='%2306b6d4' stroke-width='0.3'/%3E%3Cellipse cx='340' cy='60' rx='40' ry='30' fill='none' stroke='%2306b6d4' stroke-width='0.4'/%3E%3Cellipse cx='340' cy='60' rx='70' ry='50' fill='none' stroke='%2306b6d4' stroke-width='0.3'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 400px 400px;
 }
 
 ::selection {

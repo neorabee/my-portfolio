@@ -13,14 +13,14 @@ export default function AmbientBackground() {
         animate={{
           x: [0, 100, 0, -100, 0],
           y: [0, 50, 100, 50, 0],
-          scale: [1, 1.2, 1, 0.8, 1],
+          scale: [1, 1.1, 1, 0.9, 1],
         }}
         transition={{
           duration: 35,
           repeat: Infinity,
           ease: "linear",
         }}
-        className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-cyan-900/10 blur-[120px] mix-blend-screen"
+        className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-cyan-900/5 blur-[120px] mix-blend-screen"
       />
 
       {/* Aurora Blob 2 - Subdued Cyan */}
@@ -28,21 +28,21 @@ export default function AmbientBackground() {
         animate={{
           x: [0, -100, 0, 100, 0],
           y: [0, 100, 50, -50, 0],
-          scale: [1, 0.8, 1.2, 1, 1],
+          scale: [1, 0.9, 1.1, 1, 1],
         }}
         transition={{
           duration: 40,
           repeat: Infinity,
           ease: "linear",
         }}
-        className="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-blue-900/10 blur-[120px] mix-blend-screen"
+        className="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-blue-900/5 blur-[120px] mix-blend-screen"
       />
 
       {/* Aurora Blob 3 - Cyan center glow */}
       <motion.div
         animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.1, 0.3, 0.1],
+          scale: [1, 1.1, 1],
+          opacity: [0.05, 0.15, 0.05],
         }}
         transition={{
           duration: 20,

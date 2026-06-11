@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Sparkles, ArrowRight, Camera, Cpu, Globe, Rocket, Eye } from "lucide-react";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import FocusReveal from "./FocusReveal";
+import SectionConcept from "./SectionConcept";
 
 type ContentItem = 
   | { type: "article"; title: string; excerpt: string; link: string; date: string; colSpan: string; aspect: string }
@@ -72,17 +75,24 @@ const content: ContentItem[] = [
 ];
 
 export default function Explorations() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);
+
   return (
-    <section id="explorations" className="py-24 relative">
-      <div className="mx-auto max-w-6xl px-6 relative z-10">
+    <section id="explorations" className="py-24 relative" ref={containerRef}>
+      <SectionConcept concept={{ text: "EXPLORATION", size: "15vw", xOffset: "8%", yOffset: "10%", drift: -200, side: "right" }} />
+      <div className="mx-auto max-w-6xl px-6 relative z-10 lg:pr-[22%]">
         
-        {/* Section Header */}
-        <FocusReveal className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">Writing & Photography</h2>
-          <p className="text-muted-light max-w-xl text-base">
-            A collection of my latest blog posts and moments I've captured.
-          </p>
-        </FocusReveal>
+        {/* Docking Anchor */}
+        <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
+        <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-accent shadow-[0_0_10px_rgba(14,165,233,0.8)] translate-x-[0.5px]" />
+        
 
         {/* Compact Bento Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">

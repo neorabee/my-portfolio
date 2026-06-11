@@ -1,7 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import FocusReveal from "./FocusReveal";
+import SectionConcept from "./SectionConcept";
 
 const skillGroups = [
   {
@@ -23,18 +25,30 @@ const skillGroups = [
 ];
 
 export default function Profile() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
   return (
     <section id="profile" className="py-32 relative overflow-hidden">
+      <SectionConcept concept={{ text: "SYSTEMS", size: "20vw", xOffset: "-5%", yOffset: "15%", drift: -160, side: "left" }} />
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none" />
 
-      <div className="mx-auto max-w-6xl px-6 relative z-10">
+      <div className="mx-auto max-w-6xl px-6 relative z-10 lg:pl-[22%]">
+        
+        {/* Docking Anchor */}
+        <div className="hidden lg:block absolute left-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
+        <div className="hidden lg:block absolute left-[20%] top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-accent shadow-[0_0_10px_rgba(14,165,233,0.8)] -translate-x-[0.5px]" />
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           
           {/* LEFT COLUMN: ABOUT */}
           <div className="lg:col-span-7 space-y-12">
             <FocusReveal>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-8">About</h2>
               
               <div className="space-y-6 text-muted-light leading-relaxed text-base md:text-lg font-light">
                 <p>

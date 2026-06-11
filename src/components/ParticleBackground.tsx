@@ -13,10 +13,13 @@ class Particle {
   constructor(width: number, height: number) {
     this.x = Math.random() * width;
     this.y = Math.random() * height;
-    this.vx = (Math.random() - 0.5) * 0.3; // Very slow
-    this.vy = (Math.random() - 0.5) * 0.3;
-    this.size = Math.random() * 2 + 0.5;
-    this.alpha = Math.random() * 0.5 + 0.1;
+    // Slow down movement significantly
+    this.vx = (Math.random() - 0.5) * 0.1;
+    this.vy = (Math.random() - 0.5) * 0.1;
+    // More size variation: most are tiny, a few are slightly larger
+    this.size = Math.random() > 0.95 ? Math.random() * 2 + 0.8 : Math.random() * 0.8 + 0.2;
+    // Dramatically reduce opacity (max 0.15)
+    this.alpha = Math.random() * 0.12 + 0.03;
   }
 
   update(width: number, height: number) {
@@ -32,12 +35,17 @@ class Particle {
   draw(ctx: CanvasRenderingContext2D, hue: number) {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `hsla(${Math.floor(hue)}, 100%, 48%, ${this.alpha})`;
+    // Keep it entirely monochrome or very faint cyan
+    ctx.fillStyle = `hsla(195, 30%, 80%, ${this.alpha})`;
     ctx.fill();
     
-    // Add subtle glow
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = `hsla(${Math.floor(hue)}, 100%, 48%, 0.4)`;
+    // Minimal or no glow for majority to reduce noise
+    if (this.size > 1.5) {
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = `hsla(195, 50%, 50%, 0.1)`;
+    } else {
+      ctx.shadowBlur = 0;
+    }
   }
 }
 
@@ -66,7 +74,7 @@ export default function ParticleBackground() {
       canvas.width = width;
       canvas.height = height;
       
-      const particleCount = Math.floor((width * height) / 9000); // Responsive count
+      const particleCount = Math.floor((width * height) / 40000); // 75% fewer particles
       particles = Array.from({ length: particleCount }, () => new Particle(width, height));
     };
 

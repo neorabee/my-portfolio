@@ -7,7 +7,7 @@ import { GithubIcon, LinkedinIcon, MediumIcon, InstagramIcon } from "./icons";
 import AmbientBackground from "./hero/AmbientBackground";
 import CentralVisual from "./hero/CentralVisual";
 import SkillMarquee from "./hero/SkillMarquee";
-import AmbientTypography from "./hero/AmbientTypography";
+import SectionConcept from "./SectionConcept";
 import TechnicalGrid from "./hero/TechnicalGrid";
 import FloatingCards from "./hero/FloatingCards";
 
@@ -57,9 +57,16 @@ export default function Hero() {
     >
       {/* Background Architecture */}
       <AmbientBackground />
+      <SectionConcept concept={{
+        text: "ENGINEERING",
+        size: "18vw",
+        xOffset: "-5%",
+        yOffset: "20%",
+        drift: -150,
+        side: "left"
+      }} />
       <CentralVisual />
       <SkillMarquee />
-      <AmbientTypography />
       <TechnicalGrid />
       <FloatingCards />
 
