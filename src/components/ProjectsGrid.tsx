@@ -8,8 +8,9 @@ import SectionConcept from "./SectionConcept";
 export default function ProjectsGrid() {
   return (
     <section id="pengu" className="py-32 relative overflow-hidden">
-      <SectionConcept concept={{ text: "AUTONOMY", size: "14vw", xOffset: "5%", yOffset: "20%", drift: -140, side: "right" }} />
-      <div className="mx-auto max-w-7xl px-6 relative z-10 lg:pr-[22%]">
+      <SectionConcept concept={{ text: "AUTONOMY", size: "14vw", yOffset: "20%", direction: "right", duration: 160 }} />
+      {/* Mobile: pl-16 pr-6, Desktop: px-6 pr-[22%] */}
+      <div className="mx-auto max-w-7xl pl-16 pr-6 lg:px-6 relative z-10 lg:pr-[22%]">
         
         {/* Docking Anchor */}
         <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />

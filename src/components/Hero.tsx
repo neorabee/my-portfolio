@@ -60,10 +60,9 @@ export default function Hero() {
       <SectionConcept concept={{
         text: "ENGINEERING",
         size: "18vw",
-        xOffset: "-5%",
         yOffset: "20%",
-        drift: -150,
-        side: "left"
+        direction: "left",
+        duration: 120
       }} />
       <CentralVisual />
       <SkillMarquee />

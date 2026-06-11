@@ -35,10 +35,11 @@ export default function Profile() {
 
   return (
     <section id="profile" className="py-32 relative overflow-hidden">
-      <SectionConcept concept={{ text: "SYSTEMS", size: "20vw", xOffset: "-5%", yOffset: "15%", drift: -160, side: "left" }} />
+      <SectionConcept concept={{ text: "SYSTEMS", size: "20vw", yOffset: "15%", direction: "left", duration: 150 }} />
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none" />
 
-      <div className="mx-auto max-w-6xl px-6 relative z-10 lg:pl-[22%]">
+      {/* Mobile: pl-16 pr-6, Desktop: px-6 pl-[22%] */}
+      <div className="mx-auto max-w-6xl pl-16 pr-6 lg:px-6 relative z-10 lg:pl-[22%]">
         
         {/* Docking Anchor */}
         <div className="hidden lg:block absolute left-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />

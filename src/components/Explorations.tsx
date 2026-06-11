@@ -86,8 +86,9 @@ export default function Explorations() {
 
   return (
     <section id="explorations" className="py-24 relative" ref={containerRef}>
-      <SectionConcept concept={{ text: "EXPLORATION", size: "15vw", xOffset: "8%", yOffset: "10%", drift: -200, side: "right" }} />
-      <div className="mx-auto max-w-6xl px-6 relative z-10 lg:pr-[22%]">
+      <SectionConcept concept={{ text: "EXPLORATION", size: "15vw", yOffset: "10%", direction: "right", duration: 130 }} />
+      {/* Mobile: pl-16 pr-6, Desktop: px-6 pr-[22%] */}
+      <div className="mx-auto max-w-6xl pl-16 pr-6 lg:px-6 relative z-10 lg:pr-[22%]">
         
         {/* Docking Anchor */}
         <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />

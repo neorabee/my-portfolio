@@ -44,6 +44,7 @@ interface NodeData {
   x: number;
   y: number;
   xPct: number;
+  isMobile?: boolean;
 }
 
 /* ────────────────────────────────────────────
@@ -182,8 +183,12 @@ function RoadmapNode({
         <motion.line x1={node.x} y1={node.y - 22} x2={node.x} y2={node.y + 22} stroke={C.minor} strokeWidth="0.6" style={{ opacity }} />
         <motion.circle cx={node.x} cy={node.y} r="8" fill="none" stroke={C.major} strokeWidth="1" style={{ opacity, scale }} />
         <motion.circle cx={node.x} cy={node.y} r="3" fill="#fff" style={{ opacity }} />
-        <motion.text x={node.x + 28} y={labelY} fill={C.label} fontSize="14" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.2em" style={{ opacity }}>{node.label}</motion.text>
-        <motion.text x={node.x + 28} y={subLabelY} fill={C.subLabel} fontSize="10" fontFamily="var(--font-mono)" letterSpacing="0.1em" style={{ opacity }}>{node.sub}</motion.text>
+        {!node.isMobile && (
+          <>
+            <motion.text x={node.x + 28} y={labelY} fill={C.label} fontSize="14" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.2em" style={{ opacity }}>{node.label}</motion.text>
+            <motion.text x={node.x + 28} y={subLabelY} fill={C.subLabel} fontSize="10" fontFamily="var(--font-mono)" letterSpacing="0.1em" style={{ opacity }}>{node.sub}</motion.text>
+          </>
+        )}
       </g>
     );
   }
@@ -196,11 +201,15 @@ function RoadmapNode({
         <motion.circle cx={node.x} cy={node.y} r="16" fill="none" stroke={C.major} strokeWidth="1.5" style={{ opacity, scale }} />
         <motion.circle cx={node.x} cy={node.y} r="10" fill="none" stroke={C.major} strokeWidth="0.6" style={{ opacity }} />
         <motion.circle cx={node.x} cy={node.y} r="5" fill="#fff" style={{ opacity }} />
-        {dir !== 0 && (
+        {dir !== 0 && !node.isMobile && (
           <motion.line x1={node.x + dir * 20} y1={node.y} x2={node.x + dir * connLen} y2={node.y} stroke={C.major} strokeWidth="0.8" strokeDasharray="4 4" style={{ opacity }} />
         )}
-        <motion.text x={labelX} y={labelY} fill={C.label} fontSize="14" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.15em" textAnchor={labelAnchor} style={{ opacity }}>{node.label}</motion.text>
-        <motion.text x={labelX} y={subLabelY} fill={C.subLabel} fontSize="10" fontFamily="var(--font-mono)" letterSpacing="0.08em" textAnchor={labelAnchor} style={{ opacity }}>{node.sub}</motion.text>
+        {!node.isMobile && (
+          <>
+            <motion.text x={labelX} y={labelY} fill={C.label} fontSize="14" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.15em" textAnchor={labelAnchor} style={{ opacity }}>{node.label}</motion.text>
+            <motion.text x={labelX} y={subLabelY} fill={C.subLabel} fontSize="10" fontFamily="var(--font-mono)" letterSpacing="0.08em" textAnchor={labelAnchor} style={{ opacity }}>{node.sub}</motion.text>
+          </>
+        )}
       </g>
     );
   }
@@ -212,11 +221,15 @@ function RoadmapNode({
         <circle cx={node.x} cy={node.y} r="7" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
         <motion.circle cx={node.x} cy={node.y} r="7" fill="none" stroke={C.minor} strokeWidth="1" style={{ opacity, scale }} />
         <motion.circle cx={node.x} cy={node.y} r="2.5" fill={C.minor} style={{ opacity }} />
-        {dir !== 0 && (
+        {dir !== 0 && !node.isMobile && (
           <motion.line x1={node.x + dir * 10} y1={node.y} x2={node.x + dir * connLen} y2={node.y} stroke={C.minor} strokeWidth="0.6" strokeDasharray="3 5" style={{ opacity }} />
         )}
-        <motion.text x={labelX} y={labelY} fill={C.label} fontSize="12" fontFamily="var(--font-mono)" fontWeight="500" letterSpacing="0.12em" textAnchor={labelAnchor} style={{ opacity }}>{node.label}</motion.text>
-        <motion.text x={labelX} y={subLabelY} fill={C.subLabel} fontSize="9" fontFamily="var(--font-mono)" letterSpacing="0.08em" textAnchor={labelAnchor} style={{ opacity }}>{node.sub}</motion.text>
+        {!node.isMobile && (
+          <>
+            <motion.text x={labelX} y={labelY} fill={C.label} fontSize="12" fontFamily="var(--font-mono)" fontWeight="500" letterSpacing="0.12em" textAnchor={labelAnchor} style={{ opacity }}>{node.label}</motion.text>
+            <motion.text x={labelX} y={subLabelY} fill={C.subLabel} fontSize="9" fontFamily="var(--font-mono)" letterSpacing="0.08em" textAnchor={labelAnchor} style={{ opacity }}>{node.sub}</motion.text>
+          </>
+        )}
       </g>
     );
   }
@@ -228,11 +241,15 @@ function RoadmapNode({
         <motion.rect x={node.x - 6} y={node.y - 6} width="12" height="12" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.04)" strokeWidth="1" style={{ rotate: 45 }} />
         <motion.rect x={node.x - 6} y={node.y - 6} width="12" height="12" fill="none" stroke={C.minor} strokeWidth="1" style={{ opacity, scale, rotate: 45 }} />
         <motion.circle cx={node.x} cy={node.y} r="2" fill={C.minor} style={{ opacity }} />
-        {dir !== 0 && (
+        {dir !== 0 && !node.isMobile && (
           <motion.line x1={node.x + dir * 10} y1={node.y} x2={node.x + dir * connLen} y2={node.y} stroke={C.minor} strokeWidth="0.6" strokeDasharray="2 6" style={{ opacity }} />
         )}
-        <motion.text x={labelX} y={labelY} fill={C.label} fontSize="12" fontFamily="var(--font-mono)" fontWeight="500" letterSpacing="0.12em" textAnchor={labelAnchor} style={{ opacity }}>{node.label}</motion.text>
-        <motion.text x={labelX} y={subLabelY} fill={C.subLabel} fontSize="9" fontFamily="var(--font-mono)" letterSpacing="0.08em" textAnchor={labelAnchor} style={{ opacity }}>{node.sub}</motion.text>
+        {!node.isMobile && (
+          <>
+            <motion.text x={labelX} y={labelY} fill={C.label} fontSize="12" fontFamily="var(--font-mono)" fontWeight="500" letterSpacing="0.12em" textAnchor={labelAnchor} style={{ opacity }}>{node.label}</motion.text>
+            <motion.text x={labelX} y={subLabelY} fill={C.subLabel} fontSize="9" fontFamily="var(--font-mono)" letterSpacing="0.08em" textAnchor={labelAnchor} style={{ opacity }}>{node.sub}</motion.text>
+          </>
+        )}
       </g>
     );
   }
@@ -243,8 +260,12 @@ function RoadmapNode({
       <motion.circle cx={node.x} cy={node.y} r="14" fill="none" stroke="rgba(130,180,220,0.08)" strokeWidth="0.8" style={{ opacity }} />
       <motion.circle cx={node.x} cy={node.y} r="9" fill="none" stroke={C.minor} strokeWidth="1" style={{ opacity, scale }} />
       <motion.circle cx={node.x} cy={node.y} r="3" fill={C.minor} style={{ opacity }} />
-      <motion.text x={node.x} y={node.y + 28} fill={C.label} fontSize="13" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.2em" textAnchor="middle" style={{ opacity }}>{node.label}</motion.text>
-      <motion.text x={node.x} y={node.y + 44} fill={C.subLabel} fontSize="9" fontFamily="var(--font-mono)" letterSpacing="0.1em" textAnchor="middle" style={{ opacity }}>{node.sub}</motion.text>
+      {!node.isMobile && (
+        <>
+          <motion.text x={node.x} y={node.y + 28} fill={C.label} fontSize="13" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.2em" textAnchor="middle" style={{ opacity }}>{node.label}</motion.text>
+          <motion.text x={node.x} y={node.y + 44} fill={C.subLabel} fontSize="9" fontFamily="var(--font-mono)" letterSpacing="0.1em" textAnchor="middle" style={{ opacity }}>{node.sub}</motion.text>
+        </>
+      )}
     </g>
   );
 }
@@ -291,12 +312,15 @@ export default function GlobalRoadmap() {
       const w = cRect.width;
       const built: NodeData[] = [];
 
+      const isMobile = w < 1024;
+
       SECTIONS.forEach((sec) => {
         const el = document.getElementById(sec.id);
         if (!el) return;
         const r = el.getBoundingClientRect();
         const y = window.scrollY + r.top + r.height / 2 - cTop;
-        built.push({ ...sec, x: w * sec.xPct, y });
+        const x = isMobile ? 32 : w * sec.xPct;
+        built.push({ ...sec, x, y, isMobile });
       });
 
       setNodes(built);

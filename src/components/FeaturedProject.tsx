@@ -8,8 +8,9 @@ import SectionConcept from "./SectionConcept";
 export default function FeaturedProject() {
   return (
     <section id="projects" className="py-32 relative overflow-hidden">
-      <SectionConcept concept={{ text: "ARCHITECTURE", size: "16vw", xOffset: "-8%", yOffset: "10%", drift: -180, side: "left" }} />
-      <div className="mx-auto max-w-7xl px-6 relative z-10 lg:pl-[22%]">
+      <SectionConcept concept={{ text: "ARCHITECTURE", size: "16vw", yOffset: "10%", direction: "left", duration: 140 }} />
+      {/* Mobile: pl-16 pr-6, Desktop: px-6 pl-[22%] */}
+      <div className="mx-auto max-w-7xl pl-16 pr-6 lg:px-6 relative z-10 lg:pl-[22%]">
         
         {/* Docking Anchor */}
         <div className="hidden lg:block absolute left-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
