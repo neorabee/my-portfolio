@@ -6,6 +6,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import FocusReveal from "./FocusReveal";
 import SectionConcept from "./SectionConcept";
+import MobileSectionHeader from "./MobileSectionHeader";
 
 type ContentItem = 
   | { type: "article"; title: string; excerpt: string; link: string; date: string; colSpan: string; aspect: string }
@@ -75,28 +76,23 @@ const content: ContentItem[] = [
 ];
 
 export default function Explorations() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, 50]);
-
   return (
     <section id="explorations" className="py-24 relative" ref={containerRef}>
       <SectionConcept concept={{ text: "EXPLORATION", size: "15vw", yOffset: "10%", direction: "right", duration: 130 }} />
-      {/* Mobile: pl-16 pr-6, Desktop: px-6 pr-[22%] */}
-      <div className="mx-auto max-w-6xl pl-16 pr-6 lg:px-6 relative z-10 lg:pr-[22%]">
+      <div className="mx-auto max-w-6xl px-6 relative z-10 lg:pr-[22%]">
         
-        {/* Docking Anchor */}
-        <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
-        <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-accent shadow-[0_0_10px_rgba(14,165,233,0.8)] translate-x-[0.5px]" />
-        
+        <MobileSectionHeader title="EXPLORATIONS" subtitle="SIGNALS & OBSERVATIONS" />
+
+ 
 
         {/* Compact Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
+        <div id="anchor-explorations" className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 mt-8">
           {content.map((item, i) => {
             if (item.type === "article") {
               return (

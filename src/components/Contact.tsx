@@ -5,14 +5,16 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import FocusReveal from "./FocusReveal";
 import SectionConcept from "./SectionConcept";
+import MobileSectionHeader from "./MobileSectionHeader";
 
 export default function Contact() {
   return (
     <section id="contact" className="py-40 relative">
       <SectionConcept concept={{ text: "DESTINATION", size: "16vw", yOffset: "10%", direction: "left", duration: 160 }} />
-      {/* Mobile: pl-16 pr-6, Desktop: px-6 */}
-      <div className="mx-auto max-w-5xl pl-16 pr-6 lg:px-6 relative z-10">
+      <div className="mx-auto max-w-5xl px-6 relative z-10">
         
+        <MobileSectionHeader title="CONTACT" subtitle="FINAL DESTINATION" />
+
         <FocusReveal className="flex flex-col md:flex-row gap-16 md:gap-24 items-start">
           
           {/* Left Side: Massive Typography */}
@@ -24,13 +26,12 @@ export default function Contact() {
               </span>
             </div>
             
-            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter leading-none mb-6">
+            <h2 id="anchor-contact" className="text-5xl md:text-7xl font-bold tracking-tighter leading-none mb-6">
               Open a<br />Channel.
             </h2>
             
             <p className="text-lg text-muted-light font-light max-w-md">
-              Whether you have a question about systems architecture, want to collaborate on a new project, or just want to say hi.
-            </p>
+              Feel free to contact me about anything: whether you're looking collaborate on a novel project, or just want to say hello.          </p>
           </div>
 
           {/* Right Side: Links */}
@@ -56,6 +57,18 @@ export default function Contact() {
               <span className="text-sm font-mono text-muted uppercase tracking-widest">WhatsApp</span>
               <div className="flex items-center justify-between text-xl md:text-2xl font-medium text-muted-light group-hover:text-foreground transition-colors duration-300">
                 +91 97465 12922
+                <ArrowRight size={24} className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+              </div>
+            </a>
+                        <a 
+              href="https://www.linkedin.com/in/rabee-aman-achoth-609606376/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col gap-2 pb-8 border-b border-white/5 hover:border-[#25D366]/50 transition-colors duration-500"
+            >
+              <span className="text-sm font-mono text-muted uppercase tracking-widest">LinkedIn</span>
+              <div className="flex items-center justify-between text-xl md:text-2xl font-medium text-muted-light group-hover:text-foreground transition-colors duration-300">
+                Rabee Aman Achoth
                 <ArrowRight size={24} className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
               </div>
             </a>

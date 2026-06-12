@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import FocusReveal from "./FocusReveal";
 import SectionConcept from "./SectionConcept";
+import MobileSectionHeader from "./MobileSectionHeader";
 
 const skillGroups = [
   {
@@ -21,6 +22,10 @@ const skillGroups = [
   {
     title: "Writing & Communication",
     skills: ["Technical Writing", "Documentation", "Science Communication"]
+  },
+  {
+    title: "Languages",
+    skills: ["C", "JavaScript", "HTML", "CSS", "Python"]
   }
 ];
 
@@ -38,13 +43,11 @@ export default function Profile() {
       <SectionConcept concept={{ text: "SYSTEMS", size: "20vw", yOffset: "15%", direction: "left", duration: 150 }} />
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none" />
 
-      {/* Mobile: pl-16 pr-6, Desktop: px-6 pl-[22%] */}
-      <div className="mx-auto max-w-6xl pl-16 pr-6 lg:px-6 relative z-10 lg:pl-[22%]">
+      <div className="mx-auto max-w-6xl px-6 relative z-10 lg:pl-[22%]">
         
-        {/* Docking Anchor */}
-        <div className="hidden lg:block absolute left-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
-        <div className="hidden lg:block absolute left-[20%] top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-accent shadow-[0_0_10px_rgba(14,165,233,0.8)] -translate-x-[0.5px]" />
-        
+        <MobileSectionHeader title="PROFILE" subtitle="THE OPERATOR" />
+
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
           
           {/* LEFT COLUMN: ABOUT */}
@@ -52,7 +55,7 @@ export default function Profile() {
             <FocusReveal>
               
               <div className="space-y-6 text-muted-light leading-relaxed text-base md:text-lg font-light">
-                <p>
+                <p id="anchor-profile">
                   I&apos;m <span className="text-foreground font-medium">Rabee Aman Achoth</span>, a 2nd-year
                   Computer Science and Engineering student at NIT Calicut. I focus on building robust backend systems, exploring Linux infrastructure, and developing internal developer tooling.
                 </p>
@@ -64,7 +67,7 @@ export default function Profile() {
                   Currently, I&apos;m building a real-time CTF Tracking extension for the cybersecurity club at NITC, and also helping build an AI-powered CTF solving bot.
                 </p>
                 <p>
-                  Beyond code, I spend my time exploring science communication by write about ideas that could shape our future and philosophical abstraction. I also play football, run and read.
+                  Beyond code, I spend my time exploring science communication by writing about ideas that could shape our future and philosophical abstraction. I also play football, run and read.
                 </p>
               </div>
             </FocusReveal>

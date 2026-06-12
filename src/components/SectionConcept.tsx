@@ -22,7 +22,7 @@ export default function SectionConcept({ concept }: { concept: ConceptWord }) {
 
   return (
     <div
-      className="absolute inset-0 overflow-hidden pointer-events-none z-0"
+      className="hidden lg:block absolute inset-0 overflow-hidden pointer-events-none z-0"
     >
       <motion.div
         className="pointer-events-none select-none flex absolute"

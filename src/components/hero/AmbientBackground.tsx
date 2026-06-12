@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function AmbientBackground() {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+    <div className="hidden lg:block absolute inset-0 overflow-hidden pointer-events-none">
       {/* Deep base grid */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]" />
 
@@ -52,8 +52,31 @@ export default function AmbientBackground() {
         className="absolute top-[40%] left-[30%] w-[30vw] h-[30vw] rounded-full bg-cyan-500/5 blur-[100px] mix-blend-screen"
       />
 
-      {/* Depth Fog at bottom */}
-      <div className="absolute bottom-0 left-0 w-full h-[30vh] bg-gradient-to-t from-background to-transparent" />
+      {/* Floating Elements / Stars */}
+      <div className="absolute inset-0 z-0">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-white"
+            style={{
+              width: Math.random() * 2 + 1 + "px",
+              height: Math.random() * 2 + 1 + "px",
+              top: Math.random() * 100 + "%",
+              left: Math.random() * 100 + "%",
+            }}
+            animate={{
+              opacity: [0.2, 0.8, 0.2],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: Math.random() * 3 + 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -4,17 +4,15 @@ import { motion } from "framer-motion";
 import { ArrowRight, Activity } from "lucide-react";
 import FocusReveal from "./FocusReveal";
 import SectionConcept from "./SectionConcept";
+import MobileSectionHeader from "./MobileSectionHeader";
 
 export default function FeaturedProject() {
   return (
     <section id="projects" className="py-32 relative overflow-hidden">
       <SectionConcept concept={{ text: "ARCHITECTURE", size: "16vw", yOffset: "10%", direction: "left", duration: 140 }} />
-      {/* Mobile: pl-16 pr-6, Desktop: px-6 pl-[22%] */}
-      <div className="mx-auto max-w-7xl pl-16 pr-6 lg:px-6 relative z-10 lg:pl-[22%]">
+      <div className="mx-auto max-w-7xl px-6 relative z-10 lg:pl-[22%]">
         
-        {/* Docking Anchor */}
-        <div className="hidden lg:block absolute left-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
-        <div className="hidden lg:block absolute left-[20%] top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-accent shadow-[0_0_10px_rgba(14,165,233,0.8)] -translate-x-[0.5px]" />
+        <MobileSectionHeader title="PROJECTS" subtitle="SYSTEMS & ARCHITECTURE" />
 
         {/* LINUX DASHBOARD CINEMATIC SHOWCASE */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
@@ -30,7 +28,7 @@ export default function FeaturedProject() {
                 </span>
               </div>
               
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 leading-tight">Linux<br/>Telemetry.</h2>
+              <h2 id="anchor-projects" className="text-4xl md:text-5xl font-bold tracking-tight mb-4 leading-tight">Linux<br/>Telemetry.</h2>
               <p className="text-xl text-muted-light font-light tracking-wide mb-12">
                 Real-Time Node Monitoring
               </p>

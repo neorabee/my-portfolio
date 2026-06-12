@@ -53,7 +53,7 @@ export default function Hero() {
     <section
       ref={containerRef}
       id="hero"
-      className="relative min-h-[100vh] flex items-center justify-center overflow-hidden pt-32 pb-20 bg-background"
+      className="relative min-h-[100vh] flex items-center justify-center overflow-hidden pt-32 pb-20"
     >
       {/* Background Architecture */}
       <AmbientBackground />
@@ -84,10 +84,10 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Title / Name */}
 <motion.h1
+  id="name-text"
   variants={itemVariants}
-  className="text-6xl sm:text-7xl md:text-[6rem] font-bold tracking-tighter leading-[1.1] mb-8 text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.35)]"
+  className="text-7xl sm:text-8xl md:text-[8.5rem] font-[family-name:var(--font-cormorant)] font-medium leading-[1.1] mb-8 text-cyan-400 drop-shadow-[0_0_20px_rgba(34,211,238,0.35)]"
 >
   Rabee Aman
 </motion.h1>
@@ -102,6 +102,7 @@ export default function Hero() {
 
         {/* External Links Row */}
         <motion.div
+          id="hero-links"
           variants={itemVariants}
           className="flex flex-wrap items-center justify-center gap-4 mb-16"
         >
@@ -124,30 +125,6 @@ export default function Hero() {
               <item.icon className="w-5 h-5" />
             </motion.a>
           ))}
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          variants={itemVariants}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto"
-        >
-          <motion.a
-            href="#featured"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-foreground text-background font-medium text-sm transition-colors hover:bg-white/90 flex items-center justify-center gap-2 glow"
-          >
-            Explore Work
-          </motion.a>
-          <motion.a
-            href="#contact"
-            whileHover={{ scale: 1.02, backgroundColor: "rgba(255, 255, 255, 0.05)" }}
-            whileTap={{ scale: 0.98 }}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-xl border border-white/10 bg-surface-light/30 backdrop-blur-md text-foreground font-medium text-sm transition-colors flex items-center justify-center gap-2"
-          >
-            <Mail size={16} className="text-muted" />
-            Get in touch
-          </motion.a>
         </motion.div>
       </motion.div>
     </section>

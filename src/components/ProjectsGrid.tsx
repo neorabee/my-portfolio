@@ -4,14 +4,16 @@ import { motion } from "framer-motion";
 import { ArrowRight, Terminal, Activity, GitCommit, Database, Zap } from "lucide-react";
 import FocusReveal from "./FocusReveal";
 import SectionConcept from "./SectionConcept";
+import MobileSectionHeader from "./MobileSectionHeader";
 
 export default function ProjectsGrid() {
   return (
     <section id="pengu" className="py-32 relative overflow-hidden">
       <SectionConcept concept={{ text: "AUTONOMY", size: "14vw", yOffset: "20%", direction: "right", duration: 160 }} />
-      {/* Mobile: pl-16 pr-6, Desktop: px-6 pr-[22%] */}
-      <div className="mx-auto max-w-7xl pl-16 pr-6 lg:px-6 relative z-10 lg:pr-[22%]">
+      <div className="mx-auto max-w-7xl px-6 relative z-10 lg:pr-[22%]">
         
+        <MobileSectionHeader title="PENGU" subtitle="AUTONOMY & NAVIGATION" />
+
         {/* Docking Anchor */}
         <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
         <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-accent shadow-[0_0_10px_rgba(14,165,233,0.8)] translate-x-[0.5px]" />
@@ -30,7 +32,7 @@ export default function ProjectsGrid() {
                 </span>
               </div>
               
-              <h2 className="text-5xl md:text-6xl font-bold tracking-tight mb-4">PENGU.</h2>
+              <h2 id="anchor-pengu" className="text-5xl md:text-6xl font-bold tracking-tight mb-4">PENGU.</h2>
               <p className="text-xl text-muted-light font-light tracking-wide mb-12">
                 Autonomous Environment Navigation Agent
               </p>

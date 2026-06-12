@@ -42,7 +42,8 @@ export default function Footer() {
 
         {/* Right: Built with */}
         <div className="text-xs text-muted font-mono">
-          Built with Next.js & Framer
+          rabeeamanachoth@gmail.com
+          <br></br>+9746512922
         </div>
 
       </div>

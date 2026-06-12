@@ -114,7 +114,7 @@ export default function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-0 pointer-events-none"
+      className="hidden lg:block fixed inset-0 z-0 pointer-events-none"
       style={{ background: "#000000" }}
     />
   );

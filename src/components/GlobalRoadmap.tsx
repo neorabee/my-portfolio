@@ -24,14 +24,18 @@ const C = {
 
 /* ────────────────────────────────────────────
    SECTION CONFIG
+   Nodes are independent compositional landmarks.
+   xPct places them in the page's negative space.
+   yPct offsets them within the section's height
+   to sit in padding/whitespace areas.
    ──────────────────────────────────────────── */
 const SECTIONS = [
-  { id: "hero",         type: "origin"      as const, label: "ORIGIN",      sub: "Starting Point",     xPct: 0.50 },
-  { id: "projects",     type: "major"       as const, label: "SYSTEMS",     sub: "Major Destination",  xPct: 0.15 },
-  { id: "pengu",        type: "major"       as const, label: "PENGU",       sub: "Major Destination",  xPct: 0.85 },
-  { id: "profile",      type: "checkpoint"  as const, label: "OPERATOR",    sub: "Checkpoint",         xPct: 0.15 },
-  { id: "explorations", type: "branch"      as const, label: "SIGNALS",     sub: "Side Branch",        xPct: 0.85 },
-  { id: "contact",      type: "destination" as const, label: "DESTINATION", sub: "End of Route",       xPct: 0.50 },
+  { id: "hero",         type: "origin"      as const, label: "ORIGIN",      sub: "Starting Point",     xPct: 0.50, yPct: -1    },  // special: hero-links anchor
+  { id: "projects",     type: "major"       as const, label: "PROJECTS",     sub: "Major Destination",  xPct: 0.08, yPct: 0.46  },  // left margin, top whitespace
+  { id: "pengu",        type: "major"       as const, label: "PENGU",       sub: "Major Destination",  xPct: 0.92, yPct: 0.36  },  // right margin, top whitespace
+  { id: "profile",      type: "checkpoint"  as const, label: "PROFILE",    sub: "Checkpoint",         xPct: 0.08, yPct: 0.25  },  // left margin, slight offset
+  { id: "explorations", type: "branch"      as const, label: "SIDEQUESTS",     sub: "Side Branch",        xPct: 0.92, yPct: 0.36  },  // right margin, top whitespace
+  { id: "contact",      type: "destination" as const, label: "DESTINATION", sub: "End of Route",       xPct: 0.50, yPct: 0.12  },  // centered
 ];
 
 type NodeType = "origin" | "major" | "checkpoint" | "branch" | "destination";
@@ -47,74 +51,7 @@ interface NodeData {
   isMobile?: boolean;
 }
 
-/* ────────────────────────────────────────────
-   NEBULA — soft radial glow around nodes
-   ──────────────────────────────────────────── */
-function Nebula({ node, progress, adjusted }: { node: NodeData; progress: MotionValue<number>; adjusted: number }) {
-  const opacity = useTransform(progress, [Math.max(0, adjusted - 0.06), adjusted], [0, 1]);
-  const isMajor = node.type === "major" || node.type === "origin";
-  const size = isMajor ? 200 : 120;
 
-  return (
-    <g>
-      {/* Primary nebula bloom */}
-      <motion.circle
-        cx={node.x}
-        cy={node.y}
-        r={size}
-        fill={`url(#nebula-${node.id})`}
-        style={{ opacity }}
-      />
-      {/* Violet accent bloom — offset for depth */}
-      {isMajor && (
-        <motion.circle
-          cx={node.x + 40}
-          cy={node.y - 30}
-          r={size * 0.6}
-          fill={`url(#nebula-violet-${node.id})`}
-          style={{ opacity }}
-        />
-      )}
-    </g>
-  );
-}
-
-/* ────────────────────────────────────────────
-   ORBITAL ARC — faint trajectory around major nodes
-   ──────────────────────────────────────────── */
-function OrbitalArc({ node, progress, adjusted }: { node: NodeData; progress: MotionValue<number>; adjusted: number }) {
-  const opacity = useTransform(progress, [Math.max(0, adjusted - 0.04), adjusted], [0, 0.12]);
-  if (node.type !== "major") return null;
-
-  return (
-    <g>
-      <motion.ellipse
-        cx={node.x}
-        cy={node.y}
-        rx="55"
-        ry="28"
-        fill="none"
-        stroke={C.major}
-        strokeWidth="0.6"
-        strokeDasharray="3 8"
-        style={{ opacity }}
-        transform={`rotate(-15 ${node.x} ${node.y})`}
-      />
-      <motion.ellipse
-        cx={node.x}
-        cy={node.y}
-        rx="75"
-        ry="38"
-        fill="none"
-        stroke={C.violet}
-        strokeWidth="0.5"
-        strokeDasharray="2 12"
-        style={{ opacity }}
-        transform={`rotate(10 ${node.x} ${node.y})`}
-      />
-    </g>
-  );
-}
 
 /* ────────────────────────────────────────────
    CONTOUR RINGS — topographic elevation feel
@@ -123,10 +60,10 @@ function ContourRings({ node }: { node: NodeData }) {
   const isMajor = node.type === "major" || node.type === "origin";
   const rings = isMajor
     ? [
-        { rx: 120, ry: 90,  op: 0.02 },
-        { rx: 220, ry: 170, op: 0.014 },
-        { rx: 340, ry: 260, op: 0.008 },
-        { rx: 480, ry: 360, op: 0.005 },
+        { rx: 12, ry: 0,  op: 0.02 },
+        { rx: 0, ry: 0, op: 0.014 },
+        { rx: 0, ry: 0, op: 0.008 },
+        { rx: 0, ry: 0, op: 0.005 },
       ]
     : [
         { rx: 80,  ry: 60,  op: 0.015 },
@@ -156,19 +93,47 @@ function ContourRings({ node }: { node: NodeData }) {
 /* ────────────────────────────────────────────
    NODE RENDERER
    ──────────────────────────────────────────── */
+function RoadmapPathSegment({ d, startY, endY, scrollY }: { d: string, startY: number, endY: number, scrollY: MotionValue<number> }) {
+  const [triggerOffset, setTriggerOffset] = useState(500);
+  useEffect(() => { setTriggerOffset(window.innerHeight * 0.6); }, []);
+  
+  const pathLength = useTransform(
+    scrollY, 
+    [Math.max(0, startY - triggerOffset), Math.max(1, endY - triggerOffset)], 
+    [0, 1]
+  );
+  
+  return (
+    <motion.path
+      d={d}
+      fill="none"
+      stroke="url(#journey-grad)"
+      strokeWidth="1.5"
+      style={{ pathLength }}
+    />
+  );
+}
+
+/* ────────────────────────────────────────────
+   NODE RENDERER
+   ──────────────────────────────────────────── */
 function RoadmapNode({
   node,
-  adjusted,
-  progress,
+  scrollY,
 }: {
   node: NodeData;
-  adjusted: number;
-  progress: MotionValue<number>;
+  scrollY: MotionValue<number>;
 }) {
-  const opacity = useTransform(progress, [Math.max(0, adjusted - 0.04), adjusted], [0.08, 1]);
-  const scale  = useTransform(progress, [Math.max(0, adjusted - 0.02), adjusted, Math.min(1, adjusted + 0.04)], [0.6, 1.3, 1]);
+  const [triggerOffset, setTriggerOffset] = useState(500);
+  useEffect(() => { setTriggerOffset(window.innerHeight * 0.6); }, []);
 
-  const connLen = 60;
+  const startAnim = Math.max(0, node.y - triggerOffset - 150);
+  const endAnim = Math.max(1, node.y - triggerOffset);
+
+  const opacity = useTransform(scrollY, [startAnim, endAnim], [0.08, 1]);
+  const scale  = useTransform(scrollY, [startAnim, endAnim, endAnim + 150], [0.6, 1.3, 1]);
+
+  const connLen = 40;
   const dir = node.xPct < 0.5 ? 1 : node.xPct > 0.5 ? -1 : 0;
   const labelX = dir !== 0 ? node.x + dir * (connLen + 16) : node.x + 28;
   const labelAnchor = dir === -1 ? "end" : "start";
@@ -275,33 +240,13 @@ function RoadmapNode({
    ──────────────────────────────────────────── */
 export default function GlobalRoadmap() {
   const [nodes, setNodes] = useState<NodeData[]>([]);
-  const [pathData, setPathData] = useState("");
+  const [segments, setSegments] = useState<{d: string, startY: number, endY: number}[]>([]);
   const [svgHeight, setSvgHeight] = useState(0);
   const [svgWidth, setSvgWidth] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll();
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 50, damping: 22 });
-
-  // Viewport offset: how far ahead the clip runs
-  const getOffset = useCallback(() => {
-    if (typeof window === "undefined" || svgHeight <= 0) return 0;
-    return (window.innerHeight * 0.6) / svgHeight;
-  }, [svgHeight]);
-
-  const clipHeight = useTransform(smoothProgress, (v) => {
-    return `${Math.min((v + getOffset()) * 100, 100)}%`;
-  });
-
-  // Compute adjusted thresholds for each node so node animation
-  // matches the clip position exactly (same viewport offset).
-  const getAdjusted = useCallback(
-    (nodeY: number) => {
-      if (svgHeight <= 0) return 0;
-      return Math.max(0, nodeY / svgHeight - getOffset());
-    },
-    [svgHeight, getOffset]
-  );
+  const { scrollY } = useScroll();
+  const smoothScrollY = useSpring(scrollY, { stiffness: 60, damping: 25 });
 
   useEffect(() => {
     const update = () => {
@@ -315,11 +260,27 @@ export default function GlobalRoadmap() {
       const isMobile = w < 1024;
 
       SECTIONS.forEach((sec) => {
+        // Hero uses a special anchor to the links row
+        if (sec.id === "hero") {
+          const linksEl = document.getElementById("hero-links");
+          if (!linksEl) return;
+          const rLinks = linksEl.getBoundingClientRect();
+          const x = rLinks.left - cRect.left + (rLinks.width / 2);
+          const y = window.scrollY + rLinks.bottom + 60 - cTop;
+          built.push({ ...sec, x, y, isMobile });
+          return;
+        }
+
+        // All other nodes: position as independent landmarks
+        // using the section element for vertical reference,
+        // offset by yPct into its whitespace areas.
         const el = document.getElementById(sec.id);
         if (!el) return;
         const r = el.getBoundingClientRect();
-        const y = window.scrollY + r.top + r.height / 2 - cTop;
+
+        const y = window.scrollY + r.top + r.height * sec.yPct - cTop;
         const x = isMobile ? 32 : w * sec.xPct;
+
         built.push({ ...sec, x, y, isMobile });
       });
 
@@ -329,7 +290,7 @@ export default function GlobalRoadmap() {
       setSvgWidth(w);
 
       if (built.length > 1) {
-        let d = `M ${built[0].x},${built[0].y}`;
+        const segs = [];
         for (let i = 1; i < built.length; i++) {
           const p = built[i - 1];
           const c = built[i];
@@ -337,11 +298,22 @@ export default function GlobalRoadmap() {
           const cp1y = p.y + (c.y - p.y) * 0.45;
           const cp2x = c.x;
           const cp2y = p.y + (c.y - p.y) * 0.55;
-          d += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${c.x},${c.y}`;
+          segs.push({
+            d: `M ${p.x},${p.y} C ${cp1x},${cp1y} ${cp2x},${cp2y} ${c.x},${c.y}`,
+            startY: p.y,
+            endY: c.y
+          });
         }
+        
+        // Final infinite line extending downwards
         const last = built[built.length - 1];
-        d += ` L ${last.x},${last.y + 800}`;
-        setPathData(d);
+        segs.push({
+          d: `M ${last.x},${last.y} L ${last.x},${last.y + 800}`,
+          startY: last.y,
+          endY: last.y + 800
+        });
+
+        setSegments(segs);
       }
     };
 
@@ -357,20 +329,16 @@ export default function GlobalRoadmap() {
   return (
     <div
       ref={containerRef}
-      className="absolute top-0 left-0 w-full pointer-events-none z-0"
+      className="hidden lg:block absolute top-0 left-0 w-full pointer-events-none z-[5]"
       style={{ height: svgHeight > 0 ? svgHeight : "100%" }}
     >
-      {nodes.length > 1 && pathData && (
+      {nodes.length > 1 && segments.length > 0 && (
         <svg
           className="w-full h-full"
           xmlns="http://www.w3.org/2000/svg"
           overflow="visible"
         >
           <defs>
-            <clipPath id="journey-clip">
-              <motion.rect x="0" y="0" width="100%" height={clipHeight} />
-            </clipPath>
-
             {/* Path gradient — brightened */}
             <linearGradient id="journey-grad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%"   stopColor="rgba(140,200,240,0.8)" />
@@ -378,7 +346,7 @@ export default function GlobalRoadmap() {
               <stop offset="100%" stopColor="rgba(140,200,240,0.3)" />
             </linearGradient>
 
-            {/* Nebula radial gradients — per node, reduced opacity */}
+            {/* Nebula radial gradients */}
             {nodes.map((n) => (
               <radialGradient key={`ng-${n.id}`} id={`nebula-${n.id}`} cx="50%" cy="50%" r="50%">
                 <stop offset="0%" stopColor="rgba(140,200,240,0.03)" />
@@ -409,35 +377,31 @@ export default function GlobalRoadmap() {
             </g>
           )}
 
-          {/* ── Layer 2: Static track (very faint) ── */}
-          <path
-            d={pathData}
-            fill="none"
-            stroke={C.track}
-            strokeWidth="1"
-            strokeDasharray="6 8"
-          />
-
-          {/* ── Layer 3: Nebula blooms (scroll-revealed) ── */}
-          <g clipPath="url(#journey-clip)">
-            {nodes.map((n) => (
-              <Nebula key={`neb-${n.id}`} node={n} progress={smoothProgress} adjusted={getAdjusted(n.y)} />
-            ))}
-          </g>
-
-          {/* ── Layer 4: Illuminated path (scroll-revealed) ── */}
-          <g clipPath="url(#journey-clip)">
+          {/* ── Layer 2: Static track (very faint base layer) ── */}
+          {segments.map((s, i) => (
             <path
-              d={pathData}
+              key={`track-${i}`}
+              d={s.d}
               fill="none"
-              stroke="url(#journey-grad)"
-              strokeWidth="1.5"
+              stroke={C.track}
+              strokeWidth="1"
+              strokeDasharray="6 8"
             />
-          </g>
+          ))}
+
+          {/* ── Layer 3: Nebula blooms (scroll-revealed per node) ── */}
+          {nodes.map((n) => (
+             <NebulaRenderer key={`neb-${n.id}`} node={n} scrollY={smoothScrollY} />
+          ))}
+
+          {/* ── Layer 4: Illuminated path segments (Segmented drawing!) ── */}
+          {segments.map((s, i) => (
+             <RoadmapPathSegment key={`seg-${i}`} d={s.d} startY={s.startY} endY={s.endY} scrollY={smoothScrollY} />
+          ))}
 
           {/* ── Layer 5: Orbital arcs (scroll-revealed) ── */}
           {nodes.map((n) => (
-            <OrbitalArc key={`orb-${n.id}`} node={n} progress={smoothProgress} adjusted={getAdjusted(n.y)} />
+             <OrbitalArcRenderer key={`orb-${n.id}`} node={n} scrollY={smoothScrollY} />
           ))}
 
           {/* ── Layer 6: Nodes ── */}
@@ -445,12 +409,51 @@ export default function GlobalRoadmap() {
             <RoadmapNode
               key={n.id}
               node={n}
-              adjusted={getAdjusted(n.y)}
-              progress={smoothProgress}
+              scrollY={smoothScrollY}
             />
           ))}
         </svg>
       )}
     </div>
+  );
+}
+
+// Rewriting Nebula and OrbitalArc to accept scrollY
+function NebulaRenderer({ node, scrollY }: { node: NodeData; scrollY: MotionValue<number>; }) {
+  const [triggerOffset, setTriggerOffset] = useState(500);
+  useEffect(() => { setTriggerOffset(window.innerHeight * 0.6); }, []);
+  
+  const startAnim = Math.max(0, node.y - triggerOffset - 200);
+  const endAnim = Math.max(1, node.y - triggerOffset);
+  const opacity = useTransform(scrollY, [startAnim, endAnim], [0, 1]);
+  
+  const isMajor = node.type === "major" || node.type === "origin";
+  const size = isMajor ? 200 : 120;
+
+  return (
+    <g>
+      <motion.circle cx={node.x} cy={node.y} r={size} fill={`url(#nebula-${node.id})`} style={{ opacity }} />
+      {isMajor && (
+        <motion.circle cx={node.x + 40} cy={node.y - 30} r={size * 0.6} fill={`url(#nebula-violet-${node.id})`} style={{ opacity }} />
+      )}
+    </g>
+  );
+}
+
+function OrbitalArcRenderer({ node, scrollY }: { node: NodeData; scrollY: MotionValue<number>; }) {
+  const [triggerOffset, setTriggerOffset] = useState(500);
+  useEffect(() => { setTriggerOffset(window.innerHeight * 0.6); }, []);
+
+  const startAnim = Math.max(0, node.y - triggerOffset - 150);
+  const endAnim = Math.max(1, node.y - triggerOffset);
+  const opacity = useTransform(scrollY, [startAnim, endAnim], [0, 0.12]);
+
+  if (node.type !== "major") return null;
+
+  return (
+    <g>
+      <motion.ellipse cx={node.x} cy={node.y} rx="55" ry="28" fill="none" stroke={C.major} strokeWidth="0.6" strokeDasharray="3 8" style={{ opacity }} transform={`rotate(-15 ${node.x} ${node.y})`} />
+      <motion.ellipse cx={node.x} cy={node.y} rx="75" ry="38" fill="none" stroke={C.violet} strokeWidth="0.5" strokeDasharray="2 12" style={{ opacity }} transform={`rotate(10 ${node.x} ${node.y})`} />
+    </g>
   );
 }
