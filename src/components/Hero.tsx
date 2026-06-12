@@ -1,15 +1,13 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon, MediumIcon, InstagramIcon } from "./icons";
 import AmbientBackground from "./hero/AmbientBackground";
 import CentralVisual from "./hero/CentralVisual";
 import SkillMarquee from "./hero/SkillMarquee";
 import SectionConcept from "./SectionConcept";
-import TechnicalGrid from "./hero/TechnicalGrid";
-import FloatingCards from "./hero/FloatingCards";
 
 const containerVariants = {
   hidden: {},
@@ -38,16 +36,6 @@ const itemVariants: any = {
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Cinematic scroll fading
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95]);
-  const y = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
   return (
     <section
@@ -66,15 +54,12 @@ export default function Hero() {
       }} />
       <CentralVisual />
       <SkillMarquee />
-      <TechnicalGrid />
-      <FloatingCards />
 
       <motion.div
-        style={{ opacity, scale, y }}
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-20 text-center max-w-4xl mx-auto px-6 flex flex-col items-center"
+        className="relative z-20 text-center max-w-4xl mx-auto px-6 flex flex-col items-center hero-scroll-fade"
       >
         {/* Education Badges */}
         <motion.div variants={itemVariants} className="flex gap-3 mb-10">
@@ -112,18 +97,16 @@ export default function Hero() {
             { icon: MediumIcon, href: "https://medium.com/@rabeeaman07", label: "Medium" },
             { icon: InstagramIcon, href: "https://instagram.com/rabeelim", label: "Instagram" },
           ].map((item) => (
-            <motion.a
+            <a
               key={item.label}
               href={item.href}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center w-12 h-12 rounded-full border border-white/5 bg-white/[0.02] text-muted hover:text-foreground hover:bg-white/[0.06] transition-all duration-300"
+              className="flex items-center justify-center w-12 h-12 rounded-full border border-white/5 bg-white/[0.02] text-muted hover:text-foreground hover:bg-white/[0.06] hover:scale-105 hover:-translate-y-0.5 transition-all duration-300"
               aria-label={item.label}
             >
               <item.icon className="w-5 h-5" />
-            </motion.a>
+            </a>
           ))}
         </motion.div>
       </motion.div>

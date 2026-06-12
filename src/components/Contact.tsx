@@ -1,30 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import FocusReveal from "./FocusReveal";
 import SectionConcept from "./SectionConcept";
 import MobileSectionHeader from "./MobileSectionHeader";
+import AmbientBackground from "./hero/AmbientBackground";
 
 export default function Contact() {
   return (
     <section id="contact" className="py-40 relative">
+          <AmbientBackground />
       <SectionConcept concept={{ text: "DESTINATION", size: "16vw", yOffset: "10%", direction: "left", duration: 160 }} />
       <div className="mx-auto max-w-5xl px-6 relative z-10">
         
-        <MobileSectionHeader title="CONTACT" subtitle="FINAL DESTINATION" />
+        <MobileSectionHeader title="CONTACT" subtitle="FINAL DESTINATION" icon="beacon" />
 
         <FocusReveal className="flex flex-col md:flex-row gap-16 md:gap-24 items-start">
           
           {/* Left Side: Massive Typography */}
           <div className="md:w-1/2">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              <span className="text-xs font-mono text-accent-light uppercase tracking-widest">
-                Communications
-              </span>
-            </div>
             
             <h2 id="anchor-contact" className="text-5xl md:text-7xl font-bold tracking-tighter leading-none mb-6">
               Open a<br />Channel.

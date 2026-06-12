@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Caveat } from "next/font/google";
 import "./globals.css";
-import ParticleBackground from "@/components/ParticleBackground";
 import { Cormorant_Garamond } from "next/font/google";
 
 const cormorant = Cormorant_Garamond({
@@ -72,7 +71,6 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} antialiased`}
     >
       <body className="min-h-screen bg-black relative text-foreground selection:bg-accent/30 selection:text-white">
-        <ParticleBackground />
         <div className="relative z-10 flex flex-col min-h-screen">
           {children}
         </div>

@@ -42,20 +42,17 @@ const CONCEPTS: ConceptWord[] = [
 
 /* ────────────────────────────────────────────
    Individual floating word with parallax
+   Uses a shared scrollYProgress from parent
    ──────────────────────────────────────────── */
 function FloatingConcept({
   concept,
   absoluteY,
-  containerHeight,
+  scrollYProgress,
 }: {
   concept: ConceptWord;
   absoluteY: number;
-  containerHeight: number;
+  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll();
-
   // Parallax: drift intensity scales with scroll
   const y = useTransform(scrollYProgress, [0, 1], [0, concept.drift]);
 
@@ -69,7 +66,6 @@ function FloatingConcept({
 
   return (
     <motion.div
-      ref={ref}
       style={{ ...posStyle, y }}
       className="pointer-events-none select-none"
     >
@@ -94,6 +90,9 @@ export default function AmbientConcepts() {
   const [positions, setPositions] = useState<Map<string, number>>(new Map());
   const [containerHeight, setContainerHeight] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Single shared scroll hook instead of one per FloatingConcept
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const measure = () => {
@@ -143,7 +142,7 @@ export default function AmbientConcepts() {
             key={`${concept.text}-${i}`}
             concept={concept}
             absoluteY={sectionY}
-            containerHeight={containerHeight}
+            scrollYProgress={scrollYProgress}
           />
         );
       })}

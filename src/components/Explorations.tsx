@@ -1,13 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, Sparkles, ArrowRight, Camera, Cpu, Globe, Rocket, Eye } from "lucide-react";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import FocusReveal from "./FocusReveal";
 import SectionConcept from "./SectionConcept";
 import MobileSectionHeader from "./MobileSectionHeader";
-
+import AmbientBackground from "./hero/AmbientBackground";
 type ContentItem = 
   | { type: "article"; title: string; excerpt: string; link: string; date: string; colSpan: string; aspect: string }
   | { type: "photo"; image: string; alt: string; colSpan: string; aspect: string };
@@ -76,18 +74,14 @@ const content: ContentItem[] = [
 ];
 
 export default function Explorations() {
-  const containerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
 
   return (
-    <section id="explorations" className="py-24 relative" ref={containerRef}>
+    <section id="explorations" className="py-24 relative">
+          <AmbientBackground />
       <SectionConcept concept={{ text: "EXPLORATION", size: "15vw", yOffset: "10%", direction: "right", duration: 130 }} />
       <div className="mx-auto max-w-6xl px-6 relative z-10 lg:pr-[22%]">
         
-        <MobileSectionHeader title="EXPLORATIONS" subtitle="SIGNALS & OBSERVATIONS" />
+        <MobileSectionHeader title="EXPLORATIONS" subtitle="SIGNALS & OBSERVATIONS" icon="blackhole" />
 
  
 

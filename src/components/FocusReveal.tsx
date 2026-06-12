@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 
 interface FocusRevealProps {
   children: React.ReactNode;
@@ -14,18 +13,34 @@ export default function FocusReveal({
   className = "",
   delay = 0,
 }: FocusRevealProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { rootMargin: "-50px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      className={className}
-      initial={{ opacity: 0.4, scale: 0.98, filter: "blur(4px)" }}
-      animate={isInView ? { opacity: 1, scale: 1, filter: "blur(0px)" } : {}}
-      transition={{ duration: 0.4, delay, ease: "easeOut" }}
+      className={`focus-reveal ${visible ? "focus-reveal-visible" : ""} ${className}`}
+      style={delay > 0 ? { transitionDelay: `${delay}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

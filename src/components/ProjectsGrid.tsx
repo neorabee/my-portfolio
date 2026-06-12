@@ -1,50 +1,115 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ArrowRight, Terminal, Activity, GitCommit, Database, Zap } from "lucide-react";
+import { ArrowRight, Terminal, Activity, GitCommit, Eye, Map, Zap, Radio } from "lucide-react";
 import FocusReveal from "./FocusReveal";
 import SectionConcept from "./SectionConcept";
 import MobileSectionHeader from "./MobileSectionHeader";
 
+/* ────────────────────────────────────────────
+   Module Card — architecture subsystem box
+   ──────────────────────────────────────────── */
+function ModuleCard({
+  icon, label, items, primary,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  items: string[];
+  primary?: boolean;
+}) {
+  return (
+    <div
+      className={`rounded-xl p-4 relative overflow-hidden border transition-colors duration-500 ${
+        primary
+          ? "bg-black/60 border-accent/25 shadow-[0_0_30px_rgba(14,165,233,0.06)]"
+          : "bg-black/40 border-white/[0.07]"
+      }`}
+    >
+      {/* Top glow line */}
+      <div
+        className={`absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent to-transparent ${
+          primary ? "via-accent/40" : "via-white/[0.06]"
+        }`}
+      />
+
+      <div className="flex items-center gap-2 mb-2.5">
+        <div className={primary ? "text-accent" : "text-muted-light"}>{icon}</div>
+        <span className={`text-[10px] font-mono uppercase tracking-widest ${primary ? "text-accent/80" : "text-muted"}`}>
+          {label}
+        </span>
+      </div>
+      <div className="space-y-1">
+        {items.map((item, i) => (
+          <div key={i} className="flex items-center gap-1.5">
+            <div className={`w-1 h-1 rounded-full ${primary ? "bg-accent/40" : "bg-white/20"}`} />
+            <p className="text-[11px] text-muted font-mono">{item}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ────────────────────────────────────────────
+   Vertical data-flow connector
+   ──────────────────────────────────────────── */
+function VerticalConnector() {
+  return (
+    <div className="flex justify-center py-0.5">
+      <svg className="w-4 h-6" viewBox="0 0 16 24" fill="none">
+        <line x1="8" y1="0" x2="8" y2="16" stroke="rgba(14,165,233,0.12)" strokeWidth="1.5" strokeDasharray="3 3" />
+        <line x1="8" y1="0" x2="8" y2="16" stroke="rgba(14,165,233,0.5)" strokeWidth="1.5" strokeDasharray="3 3" className="animate-data-flow" />
+        <polygon points="5,16 8,22 11,16" fill="rgba(14,165,233,0.35)" />
+      </svg>
+    </div>
+  );
+}
+
+/* ════════════════════════════════════════════
+   PENGU — Product Launch Showcase
+   The most impressive section on the site.
+   ════════════════════════════════════════════ */
 export default function ProjectsGrid() {
   return (
-    <section id="pengu" className="py-32 relative overflow-hidden">
+    <section id="pengu" className="py-32 md:py-44 relative overflow-hidden">
       <SectionConcept concept={{ text: "AUTONOMY", size: "14vw", yOffset: "20%", direction: "right", duration: 160 }} />
       <div className="mx-auto max-w-7xl px-6 relative z-10 lg:pr-[22%]">
-        
-        <MobileSectionHeader title="PENGU" subtitle="AUTONOMY & NAVIGATION" />
 
-        {/* Docking Anchor */}
-        <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent via-accent/50 to-transparent" />
-        <div className="hidden lg:block absolute right-[20%] top-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-accent shadow-[0_0_10px_rgba(14,165,233,0.8)] translate-x-[0.5px]" />
-        
-        {/* PENGU CINEMATIC SHOWCASE */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
-          
-          {/* Left Column: Narrative */}
-          <div className="lg:col-span-5 space-y-10">
+        <MobileSectionHeader title="PENGU" subtitle="AUTONOMY & NAVIGATION" icon="saturn" />
+
+        {/* ── Main grid ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+
+          {/* ── Narrative ── */}
+          <div className="lg:col-span-5 space-y-8">
             <FocusReveal>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="h-px w-8 bg-accent/50" />
-                <span className="text-xs font-mono text-accent-light uppercase tracking-widest flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                  Live System
-                </span>
-              </div>
-              
-              <h2 id="anchor-pengu" className="text-5xl md:text-6xl font-bold tracking-tight mb-4">PENGU.</h2>
-              <p className="text-xl text-muted-light font-light tracking-wide mb-12">
+
+              {/* Title — largest heading on the site */}
+              <h2 id="anchor-pengu" className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tighter leading-[0.85] mb-3">
+                PENGU.
+              </h2>
+
+              {/* Tagline */}
+              <p className="text-lg md:text-xl text-muted-light font-light tracking-wide mb-8">
                 Autonomous Environment Navigation Agent
               </p>
 
-              <div className="space-y-8 text-base text-muted-light leading-relaxed">
+              {/* Tech capsules */}
+              <div className="flex flex-wrap gap-2 mb-10">
+                {["Mineflayer", "A* Pathfinding", "WebSockets", "Next.js"].map((t) => (
+                  <span key={t} className="px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] text-xs font-mono text-muted-light">
+                    {t}
+                  </span>
+                ))}
+              </div>
+
+              {/* Story */}
+              <div className="space-y-6 text-base text-muted-light leading-relaxed">
                 <div>
                   <h4 className="text-foreground font-semibold mb-2">The Problem</h4>
                   <p>
                     Navigating complex voxel environments programmatically requires constant spatial awareness and pathfinding recalculations. Standard bots are entirely reactive, lacking the architecture to process environmental data streams concurrently.
                   </p>
                 </div>
-                
                 <div>
                   <h4 className="text-foreground font-semibold mb-2">The Solution</h4>
                   <p>
@@ -53,8 +118,9 @@ export default function ProjectsGrid() {
                 </div>
               </div>
 
+              {/* CTA */}
               <div className="pt-8">
-                <a 
+                <a
                   href="https://github.com/neorabee/minecraft_ai_bot"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -67,64 +133,68 @@ export default function ProjectsGrid() {
             </FocusReveal>
           </div>
 
-          {/* Right Column: Visualization */}
-          <div className="lg:col-span-7 relative h-[600px] w-full rounded-2xl bg-surface/30 border border-white/5 overflow-hidden flex flex-col p-6 lg:p-10 shadow-[inset_0_0_80px_rgba(0,0,0,0.5)] group">
-            {/* Background grid inside visualization */}
-            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.1]" />
-            <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-accent/5 blur-[120px]" />
+          {/* ── Visualization ── */}
+          <div className="lg:col-span-7 relative w-full rounded-2xl bg-surface/30 border border-white/5 overflow-hidden flex flex-col p-5 sm:p-6 lg:p-8 shadow-[inset_0_0_80px_rgba(0,0,0,0.5)]">
+            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.08]" />
+            <div className="absolute top-0 right-0 w-[60%] h-[60%] bg-accent/5 blur-[120px] pointer-events-none" />
 
-            <FocusReveal className="relative z-10 h-full flex flex-col gap-6">
-              
-              {/* TOP: Topology Graph */}
-              <div className="flex-1 bg-black/40 border border-white/10 rounded-xl p-6 relative overflow-hidden">
-                <div className="absolute top-4 left-4 flex items-center gap-2">
+            <FocusReveal className="relative z-10 flex flex-col gap-4">
+
+              {/* Panel header */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
                   <Activity size={14} className="text-accent" />
-                  <span className="text-xs font-mono text-muted uppercase tracking-widest">Network Topology</span>
-                </div>
-
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative w-full max-w-sm h-32 flex items-center justify-between">
-                    {/* Node 1 */}
-                    <div className="relative z-10 w-12 h-12 rounded-lg bg-surface border border-white/20 flex items-center justify-center shadow-lg">
-                      <Database size={20} className="text-muted-light" />
-                    </div>
-                    
-                    {/* Connection Line */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
-                      <line x1="15%" y1="50%" x2="45%" y2="50%" stroke="#333" strokeWidth="2" strokeDasharray="4 4" />
-                      <line x1="55%" y1="50%" x2="85%" y2="50%" stroke="#333" strokeWidth="2" strokeDasharray="4 4" />
-                      
-                      <motion.line
-                        x1="15%" y1="50%" x2="45%" y2="50%"
-                        stroke="#0ea5e9" strokeWidth="2"
-                        initial={{ strokeDasharray: "0 100" }}
-                        animate={{ strokeDasharray: "100 0" }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                      />
-                      <motion.line
-                        x1="55%" y1="50%" x2="85%" y2="50%"
-                        stroke="#0ea5e9" strokeWidth="2"
-                        initial={{ strokeDasharray: "0 100" }}
-                        animate={{ strokeDasharray: "100 0" }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "linear", delay: 0.75 }}
-                      />
-                    </svg>
-
-                    {/* Node 2 (Center) */}
-                    <div className="relative z-10 w-16 h-16 rounded-xl bg-black border-2 border-accent shadow-[0_0_20px_rgba(14,165,233,0.3)] flex items-center justify-center">
-                      <Zap size={24} className="text-accent" />
-                    </div>
-
-                    {/* Node 3 */}
-                    <div className="relative z-10 w-12 h-12 rounded-lg bg-surface border border-white/20 flex items-center justify-center shadow-lg">
-                      <Terminal size={20} className="text-muted-light" />
-                    </div>
-                  </div>
+                  <span className="text-[11px] sm:text-xs font-mono text-muted uppercase tracking-widest">System Blueprint</span>
                 </div>
               </div>
 
-              {/* BOTTOM: Terminal Output */}
-              <div className="h-48 bg-black/60 border border-white/10 rounded-xl p-4 font-mono text-[11px] sm:text-xs overflow-hidden relative shadow-inner">
+              {/* ── Architecture Blueprint ── */}
+
+              {/* Command Center — full width */}
+              <div className="rounded-xl p-4 bg-black/50 border border-accent/20 relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+                <div className="flex items-center gap-2 mb-1.5">
+                  <Radio size={14} className="text-accent" />
+                  <span className="text-[10px] font-mono text-accent/80 uppercase tracking-widest">Command Center</span>
+                </div>
+                <h4 className="text-sm font-semibold text-foreground">Next.js Dashboard</h4>
+                <p className="text-[11px] text-muted font-mono mt-1">Real-time control interface · WebSocket stream</p>
+              </div>
+
+              <VerticalConnector />
+
+              {/* Subsystem modules — 3 cols on sm+, stack on mobile */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                <ModuleCard icon={<Eye size={14} />} label="Perception" items={["Chunk scanning", "Entity detection", "Block analysis"]} />
+                <ModuleCard icon={<Map size={14} />} label="Navigation" items={["A* pathfinding", "World graph build", "Obstacle avoidance"]} primary />
+                <ModuleCard icon={<Zap size={14} />} label="Execution" items={["Movement vectors", "Block interaction", "Inventory mgmt"]} />
+              </div>
+
+              <VerticalConnector />
+
+              {/* Engine layer — full width */}
+              <div className="rounded-xl p-4 bg-black/50 border border-white/[0.07] relative overflow-hidden text-center">
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+                <span className="text-[10px] font-mono text-muted uppercase tracking-widest">Game Engine</span>
+                <h4 className="text-sm font-semibold text-foreground mt-1">Mineflayer Runtime</h4>
+              </div>
+
+              {/* ── Metrics ── */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+                {[
+                  { value: "< 50ms", label: "Pathfinding" },
+                  { value: "Real-time", label: "Telemetry" },
+                  { value: "Concurrent", label: "Task Exec" },
+                ].map((m) => (
+                  <div key={m.label} className="text-center bg-black/30 border border-white/5 rounded-lg py-3 px-2">
+                    <div className="text-sm sm:text-base md:text-lg font-bold text-accent font-mono leading-tight">{m.value}</div>
+                    <div className="text-[9px] sm:text-[10px] text-muted font-mono uppercase tracking-wider mt-1">{m.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* ── Terminal output ── */}
+              <div className="bg-black/60 border border-white/10 rounded-xl p-4 font-mono text-[10px] sm:text-xs overflow-hidden relative shadow-inner">
                 <div className="flex justify-between items-center mb-3 border-b border-white/10 pb-2">
                   <div className="flex gap-2 items-center text-muted">
                     <Terminal size={12} />
@@ -132,22 +202,17 @@ export default function ProjectsGrid() {
                   </div>
                   <span className="text-[10px] text-accent/70">WSS://CONNECTED</span>
                 </div>
-                <div className="space-y-1.5 flex flex-col justify-end h-[calc(100%-2rem)]">
-                  <p className="text-muted"><span className="text-blue-400">[info]</span> Initializing spatial mapping...</p>
-                  <p className="text-muted"><span className="text-emerald-400">[nav]</span> Calculated optimal path: [124, 64, -89]</p>
-                  <motion.p 
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, repeat: Infinity, repeatDelay: 3 }}
-                    className="text-muted"
-                  >
-                    <span className="text-accent">[stream]</span> Broadcasting chunk telemetry (1.2mb/s)
-                  </motion.p>
-                  <motion.p 
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2, repeat: Infinity, repeatDelay: 3 }}
-                    className="text-muted"
-                  >
-                    <span className="text-emerald-400">[nav]</span> Executing movement vector...
-                  </motion.p>
-                  <p className="text-accent/50 animate-pulse mt-1">_</p>
+                <div className="space-y-1.5">
+                  <p className="text-muted"><span className="text-blue-400">[init]</span> Loading world graph...</p>
+                  <p className="text-muted"><span className="text-emerald-400">[nav]</span> Path calculated: 47 nodes → [124, 64, -89]</p>
+                  <p className="text-muted"><span className="text-yellow-400">[perc]</span> Chunk scan complete: 12 entities detected</p>
+                  <p className="text-muted" style={{ animation: "fade-pulse 4s ease-in-out 0.5s infinite" }}>
+                    <span className="text-accent">[stream]</span> Broadcasting telemetry (1.2 MB/s)
+                  </p>
+                  <p className="text-muted" style={{ animation: "fade-pulse 4s ease-in-out 2s infinite" }}>
+                    <span className="text-emerald-400">[exec]</span> Executing movement vector...
+                  </p>
+                  <p className="text-accent/40 animate-pulse mt-1">█</p>
                 </div>
               </div>
 
@@ -156,15 +221,15 @@ export default function ProjectsGrid() {
 
         </div>
 
-        {/* CURRENTLY BUILDING SECTION */}
-        <div className="mt-40 border-t border-white/5 pt-6">
+        {/* ── CURRENTLY BUILDING ── */}
+        <div className="mt-32 sm:mt-40 border-t border-white/5 pt-6">
           <FocusReveal>
             <div className="flex items-center gap-3 mb-8">
               <GitCommit size={16} className="text-muted" />
               <h3 className="text-sm font-mono text-muted uppercase tracking-widest">Currently Building</h3>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {[
                 { name: "CTF Tracker Extension", desc: "Browser assistance for cybersecurity club - nitc" },
                 { name: "AI CTF Automator", desc: "AI agent that solves CTFs" },

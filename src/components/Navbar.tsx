@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "./icons"; // We will add MediumIcon or use an SVG directly if needed.
+import Image from "next/image";
 
 const navLinks = [
   { label: "Home", href: "#hero" },
@@ -20,28 +21,49 @@ export default function Navbar() {
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+    let ticking = false;
+    let prevScrolled = false;
+    let prevSection = "#hero";
 
-      // Simple active section tracking
-      const sections = navLinks.map(link => link.href.substring(1));
-      let current = "#hero";
-      
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          // If the top of the section is near the top of the viewport
-          if (rect.top <= 150 && rect.bottom >= 150) {
-            current = `#${section}`;
-            break;
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const isScrolled = window.scrollY > 20;
+
+        // Only update scrolled state when it changes
+        if (isScrolled !== prevScrolled) {
+          prevScrolled = isScrolled;
+          setScrolled(isScrolled);
+        }
+
+        // Active section tracking
+        const sections = navLinks.map(link => link.href.substring(1));
+        let current = "#hero";
+
+        for (const section of sections) {
+          const element = document.getElementById(section);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= 150 && rect.bottom >= 150) {
+              current = `#${section}`;
+              break;
+            }
           }
         }
-      }
-      setActiveSection(current);
+
+        // Only update when section actually changes
+        if (current !== prevSection) {
+          prevSection = current;
+          setActiveSection(current);
+        }
+
+        ticking = false;
+      });
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -65,11 +87,13 @@ export default function Navbar() {
             className="text-base font-medium tracking-tight text-white flex items-center gap-3"
             whileHover={{ scale: 1.02 }}
           >
-            <div className="relative flex items-center justify-center">
-              <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 z-10" />
-              <div className="absolute w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping opacity-50" />
-            </div>
-            <span><span className="text-accent">R</span>abee</span>
+            <Image
+            src="/logo-r.png"
+            alt="Rabee Logo"
+            width={60}
+            height={60}
+            className="inline-block"
+/>
           </motion.a>
 
           {/* DESKTOP NAV LINKS */}

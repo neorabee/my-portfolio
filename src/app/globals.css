@@ -144,3 +144,212 @@ p {
   letter-spacing: -0.01em;
   text-wrap: pretty;
 }
+
+/* ── Performance: CSS-driven ambient animations ── */
+@keyframes aurora-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(100px, 50px) scale(1.1); }
+  50% { transform: translate(0, 100px) scale(1); }
+  75% { transform: translate(-100px, 50px) scale(0.9); }
+}
+
+@keyframes aurora-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-100px, 100px) scale(0.9); }
+  50% { transform: translate(0, 50px) scale(1.1); }
+  75% { transform: translate(100px, -50px) scale(1); }
+}
+
+@keyframes aurora-3 {
+  0%, 100% { transform: scale(1); opacity: 0.05; }
+  50% { transform: scale(1.1); opacity: 0.15; }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.5); }
+}
+
+@keyframes float-card {
+  0%, 100% { transform: translateY(0); opacity: 0.3; }
+  50% { transform: translateY(-15px); opacity: 0.6; }
+}
+
+.animate-aurora-1 { animation: aurora-1 35s linear infinite; }
+.animate-aurora-2 { animation: aurora-2 40s linear infinite; }
+.animate-aurora-3 { animation: aurora-3 20s ease-in-out infinite; }
+.animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
+.animate-float-card { animation: float-card 6s ease-in-out infinite; }
+
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee-left { animation: marquee-left 40s linear infinite; }
+.animate-marquee-right { animation: marquee-right 50s linear infinite; }
+
+.animate-spin-slow { animation: spin 100s linear infinite; }
+.animate-spin-slow-reverse { animation: spin 150s linear infinite reverse; }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ── Performance: Component-level CSS animations ── */
+@keyframes bar-pulse {
+  0%, 100% { height: var(--bar-from); }
+  50% { height: var(--bar-to); }
+}
+
+@keyframes dash-flow {
+  0% { stroke-dasharray: 0 100; }
+  100% { stroke-dasharray: 100 0; }
+}
+
+@keyframes fade-pulse {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* ── GlobalRoadmap: CSS transitions replacing ~40 useTransform hooks ── */
+/* Nodes: fade in + scale with overshoot */
+.rm-node {
+  opacity: 0.08;
+  transform: scale(0.6);
+  transition: opacity 0.8s ease-out, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.6s ease-out;
+  filter: brightness(1);
+}
+.rm-node.rm-visible {
+  opacity: 0.55;
+  transform: scale(1);
+}
+/* Active destination — the "you are here" node */
+.rm-node.rm-visible.rm-active {
+  opacity: 1;
+  filter: brightness(1.15);
+  animation: rm-arrive 0.6s ease-out;
+}
+@keyframes rm-arrive {
+  0% { filter: brightness(1); }
+  40% { filter: brightness(1.5); }
+  100% { filter: brightness(1.15); }
+}
+
+/* Nebula blooms: simple fade */
+.rm-nebula {
+  opacity: 0;
+  transition: opacity 1.2s ease-out;
+}
+.rm-nebula.rm-visible {
+  opacity: 1;
+}
+
+/* Path segments: draw via stroke-dashoffset */
+.rm-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.5s ease-out, opacity 0.5s ease-out;
+  opacity: 0.4;
+}
+.rm-path.rm-visible {
+  stroke-dashoffset: 0;
+}
+/* Active path segment — brighter to show "you are on this route" */
+.rm-path.rm-visible.rm-path-active {
+  opacity: 1;
+}
+
+/* Orbital arcs: subtle fade */
+.rm-orbital {
+  opacity: 0;
+  transition: opacity 1s ease-out 0.3s;
+}
+.rm-orbital.rm-visible {
+  opacity: 0.12;
+}
+
+/* ── Celestial body rotations (GPU-composited) ── */
+@keyframes rm-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Star rays — gentle slow rotation */
+.rm-rotate-star {
+  animation: rm-spin 60s linear infinite;
+}
+
+/* Small star — slightly faster, opposite direction */
+.rm-rotate-star-sm {
+  animation: rm-spin 45s linear infinite reverse;
+}
+
+/* Saturn rings — medium orbital speed */
+.rm-rotate-ring {
+  animation: rm-spin 25s linear infinite;
+}
+
+/* Black hole accretion disk — fast dramatic spin */
+.rm-rotate-hole {
+  animation: rm-spin 12s linear infinite;
+}
+
+/* Beacon halo — slow counter-rotation to rays */
+.rm-rotate-beacon {
+  animation: rm-spin 35s linear infinite reverse;
+}
+
+/* ── Project section: data-flow connectors ── */
+@keyframes data-flow {
+  from { stroke-dashoffset: 8; }
+  to { stroke-dashoffset: 0; }
+}
+.animate-data-flow {
+  animation: data-flow 0.8s linear infinite;
+}
+
+/* ── SectionConcept: CSS-driven marquee replacing framer-motion infinite loop ── */
+@keyframes concept-scroll-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes concept-scroll-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+/* ── FocusReveal: CSS transitions replacing framer-motion useInView ── */
+.focus-reveal {
+  opacity: 0.4;
+  transform: scale(0.98);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+.focus-reveal-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Hero scroll fade: CSS animation-timeline replacing useScroll+useTransform ── */
+.hero-scroll-fade {
+  animation: hero-fade-out linear both;
+  animation-timeline: scroll();
+  animation-range: 0vh 80vh;
+}
+@keyframes hero-fade-out {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.95) translateY(100px); }
+}
+
+/* Fallback for browsers without scroll-timeline support */
+@supports not (animation-timeline: scroll()) {
+  .hero-scroll-fade {
+    animation: none;
+  }
+}

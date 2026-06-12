@@ -1,16 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 export default function CentralVisual() {
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] pointer-events-none z-0 opacity-30 mix-blend-screen">
-      {/* Outer rotating dashed ring */}
-      <motion.svg
+      {/* Outer rotating dashed ring — CSS animation */}
+      <svg
         viewBox="0 0 100 100"
-        className="absolute inset-0 w-full h-full text-blue-500/20"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 w-full h-full text-blue-500/20 animate-spin-slow"
       >
         <circle
           cx="50"
@@ -30,14 +26,12 @@ export default function CentralVisual() {
           strokeWidth="0.1"
           strokeDasharray="1 8"
         />
-      </motion.svg>
+      </svg>
 
-      {/* Inner counter-rotating ring */}
-      <motion.svg
+      {/* Inner counter-rotating ring — CSS animation */}
+      <svg
         viewBox="0 0 100 100"
-        className="absolute inset-0 w-full h-full text-cyan-400/20"
-        animate={{ rotate: -360 }}
-        transition={{ duration: 150, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 w-full h-full text-cyan-400/20 animate-spin-slow-reverse"
       >
         <circle
           cx="50"
@@ -48,7 +42,7 @@ export default function CentralVisual() {
           strokeWidth="0.15"
           strokeDasharray="4 4"
         />
-      </motion.svg>
+      </svg>
 
       {/* Abstract node connections */}
       <svg
