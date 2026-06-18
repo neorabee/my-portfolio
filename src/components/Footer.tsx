@@ -2,11 +2,7 @@
 
 export default function Footer() {
   const navLinks = [
-    { label: "Status", href: "#hero" },
-    { label: "Operator", href: "#profile" },
-    { label: "Systems", href: "#projects" },
-    { label: "Logs", href: "#explorations" },
-    { label: "Comms", href: "#contact" },
+    { label: "Go back to origin", href: "#hero" },
   ];
 
   return (
@@ -15,10 +11,6 @@ export default function Footer() {
         
         {/* Left: Branding & Copy */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-accent/50" />
-            <span className="text-sm font-medium tracking-tight text-white"><span className="text-accent">R</span>abee</span>
-          </div>
           <span className="text-muted-light/20 hidden md:block">|</span>
           <p className="text-xs text-muted font-mono">
             © {new Date().getFullYear()}

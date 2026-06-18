@@ -9,20 +9,23 @@ import Footer from "@/components/Footer";
 
 import GlobalRoadmap from "@/components/GlobalRoadmap";
 
+import { RoadmapProvider } from "@/components/RoadmapContext";
+
 export default function Home() {
   return (
-    <>
+    <RoadmapProvider>
       <Navbar />
-      <main className="relative">
+      <main className="relative overflow-x-hidden">
         <GlobalRoadmap />
         <Hero />
         <FeaturedProject />
         <ProjectsGrid />
         <Profile />
-        <Explorations />
         <Contact />
+        <Explorations />
+
       </main>
       <Footer />
-    </>
+    </RoadmapProvider>
   );
 }

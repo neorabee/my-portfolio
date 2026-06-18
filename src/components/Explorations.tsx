@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
-import FocusReveal from "./FocusReveal";
-import SectionConcept from "./SectionConcept";
+
+
 import MobileSectionHeader from "./MobileSectionHeader";
-import AmbientBackground from "./hero/AmbientBackground";
+
 type ContentItem = 
   | { type: "article"; title: string; excerpt: string; link: string; date: string; colSpan: string; aspect: string }
   | { type: "photo"; image: string; alt: string; colSpan: string; aspect: string };
@@ -77,8 +77,8 @@ export default function Explorations() {
 
   return (
     <section id="explorations" className="py-24 relative">
-          <AmbientBackground />
-      <SectionConcept concept={{ text: "EXPLORATION", size: "15vw", yOffset: "10%", direction: "right", duration: 130 }} />
+          
+      
       <div className="mx-auto max-w-6xl px-6 relative z-10 lg:pr-[22%]">
         
         <MobileSectionHeader title="EXPLORATIONS" subtitle="SIGNALS & OBSERVATIONS" icon="blackhole" />
@@ -91,7 +91,7 @@ export default function Explorations() {
             if (item.type === "article") {
               return (
                 <div key={i} className={`${item.colSpan} ${item.aspect} relative group h-full`}>
-                  <FocusReveal delay={i * 0.05} className="h-full">
+                  <div>
                     <a 
                       href={item.link} 
                       target="_blank" 
@@ -111,13 +111,13 @@ export default function Explorations() {
                         READ ARTICLE <ArrowUpRight size={14} />
                       </div>
                     </a>
-                  </FocusReveal>
+                  </div>
                 </div>
               );
             } else {
               return (
                 <div key={i} className={`${item.colSpan} ${item.aspect} relative overflow-hidden rounded-2xl border border-white/5 bg-surface group`}>
-                  <FocusReveal delay={i * 0.05} className="w-full h-full">
+                  <div>
                     <a 
                       href="https://www.pexels.com/@rabee-aman-2153964241/" 
                       target="_blank" 
@@ -137,7 +137,7 @@ export default function Explorations() {
                         </div>
                       </div>
                     </a>
-                  </FocusReveal>
+                  </div>
                 </div>
               );
             }

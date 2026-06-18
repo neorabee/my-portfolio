@@ -8,8 +8,8 @@ import Image from "next/image";
 
 const navLinks = [
   { label: "Home", href: "#hero" },
-  { label: "WhoAmI", href: "#profile" },
   { label: "Projects", href: "#projects" },
+  { label: "WhoAmI", href: "#profile" },
   { label: "Diversified", href: "#explorations" },
   { label: "Contact", href: "#contact" },
 ];
@@ -18,7 +18,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("#hero");
-  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
 
   useEffect(() => {
     let ticking = false;
@@ -39,15 +38,17 @@ export default function Navbar() {
         }
 
         // Active section tracking
-        const sections = navLinks.map(link => link.href.substring(1));
+        // We track 'pengu' but map it to '#projects' so both project sections highlight the same nav link
+        const sectionsToCheck = [...navLinks.map(link => link.href.substring(1)), "pengu"];
         let current = "#hero";
 
-        for (const section of sections) {
+        for (const section of sectionsToCheck) {
           const element = document.getElementById(section);
           if (element) {
             const rect = element.getBoundingClientRect();
-            if (rect.top <= 150 && rect.bottom >= 150) {
-              current = `#${section}`;
+            // Using a more forgiving threshold since sections might be large
+            if (rect.top <= 200 && rect.bottom >= 200) {
+              current = section === "pengu" ? "#projects" : `#${section}`;
               break;
             }
           }
@@ -97,37 +98,19 @@ export default function Navbar() {
           </motion.a>
 
           {/* DESKTOP NAV LINKS */}
-          <div className="hidden md:flex items-center bg-white/[0.03] border border-white/5 p-1 rounded-full relative" onMouseLeave={() => setHoveredSection(null)}>
+          <div className="hidden md:flex items-center bg-white/[0.03] border border-white/5 p-1 rounded-full relative">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href;
-              const isHovered = hoveredSection === link.href;
               
               return (
                 <a
                   key={link.href}
                   href={link.href}
-                  onMouseEnter={() => setHoveredSection(link.href)}
                   className={`relative px-5 py-2 text-sm font-medium transition-colors duration-300 rounded-full z-10 ${
-                    isActive || isHovered ? "text-white" : "text-muted"
+                    isActive ? "text-white bg-white/5" : "text-muted hover:text-white hover:bg-white/10"
                   }`}
                 >
                   {link.label}
-                  
-                  {/* Gliding Pill Indicator */}
-                  {(isActive || isHovered) && (
-                    <motion.div
-                      layoutId="nav-pill"
-                      className={`absolute inset-0 rounded-full -z-10 ${
-                        isHovered ? "bg-white/10" : "bg-white/5"
-                      }`}
-                      initial={false}
-                      transition={{
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 30
-                      }}
-                    />
-                  )}
                 </a>
               );
             })}

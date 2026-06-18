@@ -18,7 +18,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   scroll-padding-top: 5rem;
   background-color: #030303;
 }
@@ -77,34 +76,7 @@ body::before {
   }
 }
 
-@keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-5%, -10%); }
-  20% { transform: translate(-15%, 5%); }
-  30% { transform: translate(7%, -25%); }
-  40% { transform: translate(-5%, 25%); }
-  50% { transform: translate(-15%, 10%); }
-  60% { transform: translate(15%, 0%); }
-  70% { transform: translate(0%, 15%); }
-  80% { transform: translate(3%, 35%); }
-  90% { transform: translate(-10%, 10%); }
-}
 
-.noise-overlay::before {
-  content: '';
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  right: -50%;
-  bottom: -50%;
-  width: 200%;
-  height: 200%;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
-  animation: grain 12s steps(8) infinite;
-  opacity: 0.35;
-  z-index: 9999;
-}
 
 .text-gradient {
   background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
@@ -145,57 +117,7 @@ p {
   text-wrap: pretty;
 }
 
-/* ── Performance: CSS-driven ambient animations ── */
-@keyframes aurora-1 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(100px, 50px) scale(1.1); }
-  50% { transform: translate(0, 100px) scale(1); }
-  75% { transform: translate(-100px, 50px) scale(0.9); }
-}
 
-@keyframes aurora-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(-100px, 100px) scale(0.9); }
-  50% { transform: translate(0, 50px) scale(1.1); }
-  75% { transform: translate(100px, -50px) scale(1); }
-}
-
-@keyframes aurora-3 {
-  0%, 100% { transform: scale(1); opacity: 0.05; }
-  50% { transform: scale(1.1); opacity: 0.15; }
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.5); }
-}
-
-@keyframes float-card {
-  0%, 100% { transform: translateY(0); opacity: 0.3; }
-  50% { transform: translateY(-15px); opacity: 0.6; }
-}
-
-.animate-aurora-1 { animation: aurora-1 35s linear infinite; }
-.animate-aurora-2 { animation: aurora-2 40s linear infinite; }
-.animate-aurora-3 { animation: aurora-3 20s ease-in-out infinite; }
-.animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
-.animate-float-card { animation: float-card 6s ease-in-out infinite; }
-
-@keyframes marquee-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes marquee-right {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
-}
-
-.animate-marquee-left { animation: marquee-left 40s linear infinite; }
-.animate-marquee-right { animation: marquee-right 50s linear infinite; }
-
-.animate-spin-slow { animation: spin 100s linear infinite; }
-.animate-spin-slow-reverse { animation: spin 150s linear infinite reverse; }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
@@ -221,26 +143,32 @@ p {
 /* ── GlobalRoadmap: CSS transitions replacing ~40 useTransform hooks ── */
 /* Nodes: fade in + scale with overshoot */
 .rm-node {
-  opacity: 0.08;
+  opacity: 0.2;
   transform: scale(0.6);
   transition: opacity 0.8s ease-out, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.6s ease-out;
-  filter: brightness(1);
+  filter: drop-shadow(0 0 0px rgba(140,200,240,0)) brightness(1);
 }
 .rm-node.rm-visible {
-  opacity: 0.55;
+  opacity: 0.85;
   transform: scale(1);
+  filter: drop-shadow(0 0 10px rgba(140,200,240,0.4)) brightness(1.1);
 }
 /* Active destination — the "you are here" node */
 .rm-node.rm-visible.rm-active {
   opacity: 1;
-  filter: brightness(1.15);
-  animation: rm-arrive 0.6s ease-out;
+  filter: drop-shadow(0 0 25px rgba(140,200,240,1)) brightness(1.4);
 }
-@keyframes rm-arrive {
-  0% { filter: brightness(1); }
-  40% { filter: brightness(1.5); }
-  100% { filter: brightness(1.15); }
+/* Subdued nodes (future waypoints) */
+.rm-node.rm-visible.rm-subdued {
+  opacity: 0.45;
+  filter: drop-shadow(0 0 5px rgba(140,200,240,0.2)) grayscale(0.5);
 }
+.rm-node.rm-visible.rm-subdued.rm-active {
+  opacity: 0.7;
+  filter: drop-shadow(0 0 12px rgba(140,200,240,0.5)) brightness(1.1) grayscale(0.4);
+}
+
+
 
 /* Nebula blooms: simple fade */
 .rm-nebula {
@@ -253,17 +181,56 @@ p {
 
 /* Path segments: draw via stroke-dashoffset */
 .rm-path {
+  opacity: 0;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  transition: stroke-dashoffset 1.5s ease-out, opacity 0.5s ease-out;
-  opacity: 0.4;
+  transition: opacity 1.5s ease-out, stroke-width 0.3s ease, stroke-dashoffset 1.5s ease-out;
 }
 .rm-path.rm-visible {
+  opacity: 0.55;
   stroke-dashoffset: 0;
 }
 /* Active path segment — brighter to show "you are on this route" */
 .rm-path.rm-visible.rm-path-active {
   opacity: 1;
+  stroke-width: 2.5px;
+  filter: drop-shadow(0 0 6px rgba(140,200,240,0.5));
+}
+/* Branch paths */
+.rm-path.rm-branch {
+  opacity: 0.08;
+}
+.rm-path.rm-visible.rm-branch {
+  opacity: 0.2;
+}
+.rm-path.rm-visible.rm-branch.rm-branch-illuminated {
+  opacity: 0.6;
+}
+
+/* Interactive Roadmap Extensions */
+.rm-path-interactive {
+  pointer-events: stroke;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.rm-path-group:hover .rm-path {
+  opacity: 0.9 !important;
+  stroke-width: 2.5;
+}
+.rm-path-group:hover .rm-path.rm-branch {
+  opacity: 0.9 !important;
+  stroke-width: 1.5;
+}
+
+.rm-node-interactive {
+  pointer-events: visibleFill;
+  cursor: pointer;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+  touch-action: pan-y;
+}
+.rm-node-interactive:hover {
+  filter: brightness(1.5) drop-shadow(0 0 15px rgba(140,200,240,0.4)) !important;
+  opacity: 1 !important;
 }
 
 /* Orbital arcs: subtle fade */
@@ -306,6 +273,44 @@ p {
   animation: rm-spin 35s linear infinite reverse;
 }
 
+/* Binary star orbit — very slow */
+.rm-rotate-slow {
+  animation: rm-spin 80s linear infinite;
+}
+
+/* Pulsar jets — fast rotation */
+.rm-rotate-fast {
+  animation: rm-spin 4s linear infinite;
+}
+
+@keyframes rm-pulse-opacity {
+  0%, 100% { opacity: 0.3; transform: scale(0.95); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+.rm-pulse-slow {
+  animation: rm-pulse-opacity 12s ease-in-out infinite;
+}
+
+@keyframes rm-radar {
+  0% { transform: scale(0.1); opacity: 1; stroke-width: 2px; }
+  100% { transform: scale(2); opacity: 0; stroke-width: 0.5px; }
+}
+.rm-pulse-radar {
+  animation: rm-radar 4s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+@keyframes rm-glitch-anim {
+  0%, 100% { transform: translate(0, 0); opacity: 1; }
+  10% { transform: translate(-2px, 1px); opacity: 0.8; }
+  20% { transform: translate(2px, -2px); opacity: 0.9; }
+  30% { transform: translate(-1px, 2px); opacity: 0.5; }
+  40% { transform: translate(1px, -1px); opacity: 1; }
+  50% { transform: translate(0, 0); opacity: 0.9; }
+}
+.rm-glitch {
+  animation: rm-glitch-anim 2s infinite;
+}
+
 /* ── Project section: data-flow connectors ── */
 @keyframes data-flow {
   from { stroke-dashoffset: 8; }
@@ -315,41 +320,4 @@ p {
   animation: data-flow 0.8s linear infinite;
 }
 
-/* ── SectionConcept: CSS-driven marquee replacing framer-motion infinite loop ── */
-@keyframes concept-scroll-left {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-@keyframes concept-scroll-right {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
-}
 
-/* ── FocusReveal: CSS transitions replacing framer-motion useInView ── */
-.focus-reveal {
-  opacity: 0.4;
-  transform: scale(0.98);
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-}
-.focus-reveal-visible {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* ── Hero scroll fade: CSS animation-timeline replacing useScroll+useTransform ── */
-.hero-scroll-fade {
-  animation: hero-fade-out linear both;
-  animation-timeline: scroll();
-  animation-range: 0vh 80vh;
-}
-@keyframes hero-fade-out {
-  from { opacity: 1; transform: scale(1) translateY(0); }
-  to { opacity: 0; transform: scale(0.95) translateY(100px); }
-}
-
-/* Fallback for browsers without scroll-timeline support */
-@supports not (animation-timeline: scroll()) {
-  .hero-scroll-fade {
-    animation: none;
-  }
-}

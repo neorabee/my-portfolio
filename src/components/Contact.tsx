@@ -2,21 +2,16 @@
 
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
-import FocusReveal from "./FocusReveal";
-import SectionConcept from "./SectionConcept";
 import MobileSectionHeader from "./MobileSectionHeader";
-import AmbientBackground from "./hero/AmbientBackground";
+import SectionMarker from "./SectionMarker";
 
 export default function Contact() {
   return (
-    <section id="contact" className="py-40 relative">
-          <AmbientBackground />
-      <SectionConcept concept={{ text: "DESTINATION", size: "16vw", yOffset: "10%", direction: "left", duration: 160 }} />
+    <section id="contact" className="py-40 relative group">
       <div className="mx-auto max-w-5xl px-6 relative z-10">
-        
-        <MobileSectionHeader title="CONTACT" subtitle="FINAL DESTINATION" icon="beacon" />
-
-        <FocusReveal className="flex flex-col md:flex-row gap-16 md:gap-24 items-start">
+        <SectionMarker label="BEACON // CONTACT" />
+        <MobileSectionHeader title="CONTACT" subtitle="SECURE CHANNEL" icon="beacon" />
+        <div className="flex flex-col md:flex-row gap-16 md:gap-24 items-start">
           
           {/* Left Side: Massive Typography */}
           <div className="md:w-1/2">
@@ -88,7 +83,7 @@ export default function Contact() {
             </div>
 
           </div>
-        </FocusReveal>
+        </div>
       </div>
     </section>
   );
