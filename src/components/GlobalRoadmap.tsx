@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRoadmap } from "./RoadmapContext";
+import InfrastructureDock from "./InfrastructureDock";
 
 /* ────────────────────────────────────────────
    PALETTE — subtle cyan-blue with violet hints
@@ -32,7 +33,7 @@ const SECTIONS = [
   { id: "projects",     type: "binary-star"    as const, label: "PROJECTS",     sub: "Selected Works",    xPct: 0.08, yPct: 0.46, regionLabel: "" },
   { id: "pengu",        type: "pulsar"         as const, label: "AUTONOMY",     sub: "Pengu OS",          xPct: 0.92, yPct: 0.36, regionLabel: "" },
   { id: "profile",      type: "moon"           as const, label: "PROFILE",      sub: "Systems & Stack",   xPct: 0.08, yPct: 0.60, regionLabel: "" },
-  { id: "contact",      type: "beacon"         as const, label: "CONTACT",      sub: "Secure Channel",    xPct: 0.90, yPct: 0.15, regionLabel: "" },
+  { id: "contact",      type: "beacon"         as const, label: "CONTACT",      sub: "Secure Channel",    xPct: 0.90, yPct: 0.35, regionLabel: "" },
   { id: "explorations", type: "nebula"         as const, label: "EXPLORATIONS", sub: "Side Quests",       xPct: 0.82, yPct: 0.45, regionLabel: "" },
 ];
 
@@ -223,14 +224,11 @@ function renderBinaryStarNode(node: NodeData) {
         <circle cx={x + 16} cy={y} r="4" fill="rgba(180,220,255,1)" filter="drop-shadow(0 0 4px rgba(140,200,240,0.8))" />
       </g>
 
-      {/* Connector & Labels */}
-      {dir !== 0 && !node.isMobile && (
-        <line x1={x + dir * 22} y1={y} x2={x + dir * connLen} y2={y} stroke={C.major} strokeWidth="0.8" strokeDasharray="4 4" />
-      )}
+      {/* Labels positioned above the orbital ring to avoid dock collision */}
       {!node.isMobile && (
         <>
-          <text x={labelX} y={y - 8} fill={C.label} fontSize="14" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.15em" textAnchor={labelAnchor}>{node.label}</text>
-          <text x={labelX} y={y + 10} fill={C.subLabel} fontSize="10" fontFamily="var(--font-mono)" letterSpacing="0.08em" textAnchor={labelAnchor}>{node.sub}</text>
+          <text x={x} y={y - 65} fill={C.label} fontSize="14" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.15em" textAnchor="middle">{node.label}</text>
+          <text x={x} y={y - 48} fill={C.subLabel} fontSize="10" fontFamily="var(--font-mono)" letterSpacing="0.08em" textAnchor="middle">{node.sub}</text>
         </>
       )}
     </>
@@ -447,11 +445,15 @@ function renderNode(node: NodeData) {
    - Zero framer-motion overhead
    ──────────────────────────────────────────── */
 export default function GlobalRoadmap() {
-  const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
+const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
   const [nodes, setNodes] = useState<NodeData[]>([]);
   const [segments, setSegments] = useState<{d: string, startY: number, endY: number, isBranch?: boolean, parentId?: string, targetId: string}[]>([]);
   const [svgHeight, setSvgHeight] = useState(0);
   const [svgWidth, setSvgWidth] = useState(0);
+
+  // ── NEW: Infrastructure Dock State ──
+  const [dockTriggered, setDockTriggered] = useState(false);
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleNavigate = (id: string) => {
@@ -702,6 +704,9 @@ export default function GlobalRoadmap() {
           if (closestId) {
             const newEl = containerRef.current?.querySelector(`[data-node="${closestId}"]`);
             newEl?.classList.add("rm-active");
+            if (closestId === "projects") {
+              setDockTriggered(true);
+            }
           }
           activeNodeRef.current = closestId;
         }
@@ -1071,6 +1076,15 @@ export default function GlobalRoadmap() {
             );
           })}
         </svg>
+      )}
+
+      {/* ── NEW: INFRASTRUCTURE DOCK (Rendered precisely over the binary-star node) ── */}
+      {nodes.find(n => n.id === "projects") && (
+        <InfrastructureDock 
+          nodeX={nodes.find(n => n.id === "projects")!.x} 
+          nodeY={nodes.find(n => n.id === "projects")!.y} 
+          triggered={dockTriggered} 
+        />
       )}
     </div>
 

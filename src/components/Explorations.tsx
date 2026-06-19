@@ -5,6 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 
 
 import MobileSectionHeader from "./MobileSectionHeader";
+import SectionMarker from "./SectionMarker";
 
 type ContentItem = 
   | { type: "article"; title: string; excerpt: string; link: string; date: string; colSpan: string; aspect: string }
@@ -82,8 +83,7 @@ export default function Explorations() {
       <div className="mx-auto max-w-6xl px-6 relative z-10 lg:pr-[22%]">
         
         <MobileSectionHeader title="EXPLORATIONS" subtitle="SIGNALS & OBSERVATIONS" icon="blackhole" />
-
- 
+        <SectionMarker label="MISC" />
 
         {/* Compact Bento Grid */}
         <div id="anchor-explorations" className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 mt-8">

@@ -1,8 +1,11 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 import { ArrowRight, Cpu, Server, Monitor, Activity } from "lucide-react";
 import MobileSectionHeader from "./MobileSectionHeader";
 import SectionMarker from "./SectionMarker";
+import VMMonitorArtifact from "./VMMonitorArtifact";
 
 /* ────────────────────────────────────────────
    Architecture Node — system component box
@@ -72,6 +75,14 @@ function ArchConnector() {
    Engineering case study layout
    ════════════════════════════════════════════ */
 export default function FeaturedProject() {
+  const [artifactPowered, setArtifactPowered] = useState(false);
+
+  useEffect(() => {
+    const handlePowerOn = () => setArtifactPowered(true);
+    window.addEventListener("dock-power-on", handlePowerOn);
+    return () => window.removeEventListener("dock-power-on", handlePowerOn);
+  }, []);
+
   return (
     <section id="projects" className="py-32 md:py-40 relative group">
       <div className="mx-auto max-w-7xl px-6 relative z-10 lg:pl-[22%]">
@@ -82,7 +93,7 @@ export default function FeaturedProject() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
 
           {/* ── Narrative Column ── */}
-          <div className="lg:col-span-5 space-y-8 lg:order-2">
+          <div className={`lg:col-span-5 space-y-8 lg:order-1 transition-all duration-1000 ${artifactPowered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
 
               {/* Title — cinematic scale */}
 <h2
@@ -143,10 +154,12 @@ export default function FeaturedProject() {
           </div>
 
           {/* ── Visualization Column ── */}
-          <div className="lg:col-span-7 lg:order-1 relative w-full flex flex-col pt-8 lg:pt-0">
+          <div className="lg:col-span-7 lg:order-2 relative w-full flex flex-col pt-8 lg:pt-0">
 
-            <div className="relative z-10 flex flex-col gap-5">
-
+            <div className="relative z-10 flex flex-col gap-8">
+              
+              <VMMonitorArtifact powerOn={artifactPowered} />
+              
               {/* Panel header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
