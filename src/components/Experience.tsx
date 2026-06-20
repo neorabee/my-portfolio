@@ -64,8 +64,7 @@ export default function Experience() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-6 py-20 min-h-screen flex flex-col justify-center relative lg:pl-[22%] pointer-events-auto">
-      
-      {/* Header */}
+
       <div>
         <SectionMarker label="DESTINATION // EXPERIENCE" />
         <div className="flex items-center justify-between mb-16">
@@ -84,21 +83,17 @@ export default function Experience() {
         </div>
       </div>
 
-      {/* Timeline */}
       <div className="relative border-l border-white/10 ml-4 md:ml-6 space-y-16">
         {timelineEvents.map((event, i) => (
           <div key={i}>
             <div className={`group relative border-l border-transparent pl-8 pb-4 transition-colors duration-500`}>
-              
-              {/* Vertical connector hover effect */}
+
               {!event.inactive && (
                 <div className="absolute left-[-1px] top-0 bottom-[-4rem] w-[1px] bg-accent/0 group-hover:bg-accent/40 transition-colors duration-500" />
               )}
-              
-              {/* Timeline dot */}
+
               <div className={`absolute left-[-5px] top-1.5 w-[9px] h-[9px] rounded-full bg-background border-2 transition-all duration-500 ${event.inactive ? 'border-white/10' : 'border-white/20 group-hover:border-accent group-hover:bg-accent/20 group-hover:shadow-[0_0_10px_rgba(14,165,233,0.3)]'}`} />
-              
-              {/* Content Box */}
+
               <div className={`py-1 relative ${event.inactive ? 'opacity-40' : ''}`}>
                 {!event.inactive && <div className="absolute top-0 left-0 w-0 h-px bg-accent/40 group-hover:w-16 transition-all duration-700 ease-out" />}
                 
@@ -121,7 +116,6 @@ export default function Experience() {
         ))}
       </div>
 
-      {/* Breathing Room & Auto-Return Bumper */}
       <div className="h-[50vh]" />
       <div ref={bumperRef} className="h-px w-full" />
     </div>

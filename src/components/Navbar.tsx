@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "./icons"; // We will add MediumIcon or use an SVG directly if needed.
+import { GithubIcon, LinkedinIcon } from "./icons";
 import Image from "next/image";
 
 const navLinks = [
@@ -29,32 +29,24 @@ export default function Navbar() {
       ticking = true;
 
       requestAnimationFrame(() => {
-        const isScrolled = window.scrollY > 20;
-
-        // Only update scrolled state when it changes
+        const isScrolled = window.scrollY > 20;
         if (isScrolled !== prevScrolled) {
           prevScrolled = isScrolled;
           setScrolled(isScrolled);
-        }
-
-        // Active section tracking
-        // We track 'pengu' but map it to '#projects' so both project sections highlight the same nav link
+        }
         const sectionsToCheck = [...navLinks.map(link => link.href.substring(1)), "pengu"];
         let current = "#hero";
 
         for (const section of sectionsToCheck) {
           const element = document.getElementById(section);
           if (element) {
-            const rect = element.getBoundingClientRect();
-            // Using a more forgiving threshold since sections might be large
+            const rect = element.getBoundingClientRect();
             if (rect.top <= 200 && rect.bottom >= 200) {
               current = section === "pengu" ? "#projects" : `#${section}`;
               break;
             }
           }
-        }
-
-        // Only update when section actually changes
+        }
         if (current !== prevSection) {
           prevSection = current;
           setActiveSection(current);
@@ -81,8 +73,7 @@ export default function Navbar() {
         }`}
       >
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          
-          {/* LOGO / STATUS */}
+
           <motion.a
             href="#hero"
             className="text-base font-medium tracking-tight text-white flex items-center gap-3"
@@ -97,7 +88,6 @@ export default function Navbar() {
 />
           </motion.a>
 
-          {/* DESKTOP NAV LINKS */}
           <div className="hidden md:flex items-center bg-white/[0.03] border border-white/5 p-1 rounded-full relative">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href;
@@ -116,7 +106,6 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* SOCIALS */}
           <div className="hidden md:flex items-center gap-4">
             <a href="https://github.com/neorabee" target="_blank" rel="noreferrer" className="text-muted hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full">
               <GithubIcon width={18} height={18} />
@@ -131,7 +120,6 @@ export default function Navbar() {
             </a>
           </div>
 
-          {/* MOBILE MENU TOGGLE */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden p-2 text-muted-light hover:text-white transition-colors"

@@ -16,7 +16,7 @@ const Hero = () => {
       <div
         className="relative z-20 text-center max-w-4xl mx-auto px-6 flex flex-col items-center"
       >
-        {/* Education Badges */}
+        
         <div className="flex gap-3 mb-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/5 bg-white/[0.02] backdrop-blur-md text-xs font-medium text-muted-light">
             <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
@@ -31,7 +31,6 @@ const Hero = () => {
   Rabee Aman
 </h1>
 
-        {/* Tagline */}
         <div className="max-w-2xl mx-auto mb-12">
           <p className="text-xl md:text-2xl text-muted-light leading-relaxed font-light tracking-tight">
             I'm a B.Tech CSE second year who builds <span className="text-foreground font-normal">backend systems and tools</span> that turn into
@@ -39,7 +38,6 @@ const Hero = () => {
           </p>
         </div>
 
-        {/* External Links Row */}
         <div
           id="hero-links"
           className="flex flex-wrap items-center justify-center gap-4 mb-16"

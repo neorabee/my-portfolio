@@ -48,10 +48,8 @@ export default function Profile() {
   return (
     <section id="profile" className="py-32 md:py-40 relative group">
 
-      {/* Depth Viewport Wrapper */}
       <div className="relative w-full overflow-hidden perspective-[2000px]">
-        
-        {/* ── MAIN PROFILE CONTENT ── */}
+
         <div 
           className="w-full transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] origin-center"
           style={{ 
@@ -76,13 +74,10 @@ export default function Profile() {
               </div>
             </div>
 
-            {/* ── Two-column body ── */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-start">
 
-              {/* ── Left: Philosophy + Current ── */}
               <div className="lg:col-span-7 space-y-16">
 
-                {/* Engineering philosophy */}
                 <div>
                   <div className="border-l-2 border-accent/30 pl-6 md:pl-8">
                     <p className="text-lg md:text-xl text-muted-light font-light leading-relaxed italic">
@@ -94,7 +89,6 @@ export default function Profile() {
                   </div>
                 </div>
 
-                {/* Currently */}
                 <div>
                   <div className="space-y-10">
                     <div>
@@ -126,7 +120,6 @@ export default function Profile() {
                 </div>
               </div>
 
-              {/* ── Right: Technologies ── */}
               <div className="lg:col-span-5 lg:-mt-12">
                 <div>
                   <h3 className="text-xs font-mono text-muted uppercase tracking-widest mb-8">Technologies</h3>
@@ -160,7 +153,6 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* ── EXPERIENCE BRANCH DESTINATION ── */}
       <div 
         className="fixed inset-0 overflow-y-auto overscroll-y-contain flex items-start transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] origin-center"
         onScroll={(e) => document.documentElement.style.setProperty('--detour-scroll-y', `${e.currentTarget.scrollTop}px`)}

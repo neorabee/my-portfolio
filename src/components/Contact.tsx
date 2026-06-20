@@ -12,8 +12,7 @@ export default function Contact() {
         <SectionMarker label="BEACON // CONTACT" />
         <MobileSectionHeader title="CONTACT" subtitle="SECURE CHANNEL" icon="beacon" />
         <div className="flex flex-col md:flex-row gap-16 md:gap-24 items-start">
-          
-          {/* Left Side: Massive Typography */}
+
           <div className="md:w-1/2">
             
             <h2 id="anchor-contact" className="text-5xl md:text-7xl font-bold tracking-tighter leading-none mb-6">
@@ -24,7 +23,6 @@ export default function Contact() {
               Feel free to contact me about anything: whether you're looking collaborate on a novel project, or just want to say hello.          </p>
           </div>
 
-          {/* Right Side: Links */}
           <div className="md:w-1/2 flex flex-col gap-8 w-full border-t border-white/5 pt-8 md:border-t-0 md:pt-0">
             
             <a 

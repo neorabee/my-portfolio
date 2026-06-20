@@ -4,9 +4,6 @@ import { ArrowRight, Terminal, Activity, GitCommit, Eye, Map, Zap, Radio, ArrowU
 import MobileSectionHeader from "./MobileSectionHeader";
 import SectionMarker from "./SectionMarker";
 
-/* ────────────────────────────────────────────
-   Module Card — architecture subsystem box
-   ──────────────────────────────────────────── */
 function ModuleCard({
   icon, label, items, primary,
 }: {
@@ -36,9 +33,6 @@ function ModuleCard({
   );
 }
 
-/* ────────────────────────────────────────────
-   Vertical data-flow connector
-   ──────────────────────────────────────────── */
 function VerticalConnector() {
   return (
     <div className="flex justify-center py-0.5">
@@ -50,10 +44,6 @@ function VerticalConnector() {
   );
 }
 
-/* ════════════════════════════════════════════
-   PENGU — Product Launch Showcase
-   The most impressive section on the site.
-   ════════════════════════════════════════════ */
 export default function ProjectsGrid() {
   return (
     <section id="pengu" className="py-32 md:py-44 relative group">
@@ -62,13 +52,10 @@ export default function ProjectsGrid() {
         <SectionMarker label="SECTOR: AUTONOMY" />
         <MobileSectionHeader title="AUTONOMY" subtitle="PENGU OS" icon="star" />
 
-        {/* ── Main grid ── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
 
-          {/* ── Narrative ── */}
           <div className="lg:col-span-5 space-y-8">
 
-              {/* Title — largest heading on the site */}
 <h2
   id="anchor-pengu"
   className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter leading-[0.9] mb-3"
@@ -76,12 +63,10 @@ export default function ProjectsGrid() {
   Project: Minecraft <span className="text-cyan-400">AI</span> Bot
 </h2>
 
-              {/* Tagline */}
               <p className="text-lg md:text-xl text-muted-light font-light tracking-wide mb-8">
                 Autonomous Environment Navigation Agent
               </p>
 
-              {/* Tech capsules */}
               <div className="flex flex-wrap gap-2 mb-10">
                 {["Mineflayer", "A* Pathfinding", "WebSockets", "Next.js"].map((t) => (
                   <span key={t} className="px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] text-xs font-mono text-muted-light">
@@ -90,7 +75,6 @@ export default function ProjectsGrid() {
                 ))}
               </div>
 
-              {/* Story */}
               <div className="space-y-6 text-base text-muted-light leading-relaxed">
                 <div>
                   <h4 className="text-foreground font-semibold mb-2">The Problem</h4>
@@ -106,7 +90,6 @@ export default function ProjectsGrid() {
                 </div>
               </div>
 
-              {/* CTA */}
               <div className="pt-8">
                 <a
                   href="https://github.com/neorabee/minecraft_ai_bot"
@@ -123,12 +106,10 @@ export default function ProjectsGrid() {
               </div>
           </div>
 
-          {/* ── Visualization ── */}
           <div className="lg:col-span-7 relative w-full flex flex-col pt-8 lg:pt-0">
 
             <div className="relative z-10 flex flex-col gap-4">
 
-              {/* Panel header */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Activity size={14} className="text-accent" />
@@ -136,9 +117,6 @@ export default function ProjectsGrid() {
                 </div>
               </div>
 
-              {/* ── Architecture Blueprint ── */}
-
-              {/* Command Center — full width */}
               <div className="py-3 border-l border-white/10 pl-4 relative">
                 <div className="flex items-center gap-2 mb-1.5">
                   <Radio size={14} className="text-accent" />
@@ -150,7 +128,6 @@ export default function ProjectsGrid() {
 
               <VerticalConnector />
 
-              {/* Subsystem modules — 3 cols on sm+, stack on mobile */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
                 <ModuleCard icon={<Eye size={14} />} label="Perception" items={["Chunk scanning", "Entity detection", "Block analysis"]} />
                 <ModuleCard icon={<Map size={14} />} label="Navigation" items={["A* pathfinding", "World graph build", "Obstacle avoidance"]} primary />
@@ -159,7 +136,6 @@ export default function ProjectsGrid() {
 
               <VerticalConnector />
 
-              {/* Engine layer — full width */}
               <div className="py-3 border-l border-white/10 pl-4 relative">
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-[10px] font-mono text-muted uppercase tracking-widest">Game Engine</span>
@@ -167,7 +143,6 @@ export default function ProjectsGrid() {
                 <h4 className="text-sm font-semibold text-foreground">Mineflayer Runtime</h4>
               </div>
 
-              {/* ── Metrics ── */}
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {[
                   { value: "< 50ms", label: "Pathfinding" },
@@ -181,7 +156,6 @@ export default function ProjectsGrid() {
                 ))}
               </div>
 
-              {/* ── Terminal output ── */}
               <div className="border-l border-white/10 pl-4 py-2 font-mono text-[10px] sm:text-xs relative opacity-70">
                 <div className="flex justify-between items-center mb-3 pb-2">
                   <div className="flex gap-2 items-center text-muted">
@@ -208,7 +182,6 @@ export default function ProjectsGrid() {
 
         </div>
 
-        {/* ── CURRENTLY BUILDING ── */}
         <div className="mt-32 sm:mt-40 border-t border-white/5 pt-6">
           <div>
             <div className="flex items-center gap-3 mb-8">

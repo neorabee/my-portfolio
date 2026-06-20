@@ -1,8 +1,4 @@
-/* ────────────────────────────────────────────
-   Tiny inline SVG celestial icons for mobile
-   These mirror the roadmap node designs at
-   a compact size, with CSS rotation.
-   ──────────────────────────────────────────── */
+
 
 type CelestialIcon = "saturn" | "star" | "star-sm" | "blackhole" | "beacon";
 
@@ -12,7 +8,7 @@ function CelestialMini({ type }: { type: CelestialIcon }) {
   const cy = size / 2;
 
   switch (type) {
-    /* ═══ Saturn ═══ */
+    
     case "saturn":
       return (
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="inline-block shrink-0">
@@ -33,7 +29,6 @@ function CelestialMini({ type }: { type: CelestialIcon }) {
         </svg>
       );
 
-    /* ═══ Star (large) ═══ */
     case "star":
       return (
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="inline-block shrink-0">
@@ -49,7 +44,6 @@ function CelestialMini({ type }: { type: CelestialIcon }) {
         </svg>
       );
 
-    /* ═══ Star (small / checkpoint) ═══ */
     case "star-sm":
       return (
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="inline-block shrink-0">
@@ -65,7 +59,6 @@ function CelestialMini({ type }: { type: CelestialIcon }) {
         </svg>
       );
 
-    /* ═══ Black Hole ═══ */
     case "blackhole":
       return (
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="inline-block shrink-0">
@@ -81,7 +74,6 @@ function CelestialMini({ type }: { type: CelestialIcon }) {
         </svg>
       );
 
-    /* ═══ Beacon Star ═══ */
     case "beacon":
       return (
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="inline-block shrink-0">

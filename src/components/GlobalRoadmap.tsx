@@ -4,9 +4,6 @@ import { useEffect, useState, useRef } from "react";
 import { useRoadmap } from "./RoadmapContext";
 import InfrastructureDock from "./InfrastructureDock";
 
-/* ────────────────────────────────────────────
-   PALETTE — subtle cyan-blue with violet hints
-   ──────────────────────────────────────────── */
 const C = {
   path:       "rgba(120, 180, 220, 0.25)",
   pathGlow:   "rgba(120, 180, 220, 0.12)",
@@ -23,9 +20,6 @@ const C = {
   coord:      "rgba(130, 180, 220, 0.05)",
 };
 
-/* ────────────────────────────────────────────
-   SECTION CONFIG
-   ──────────────────────────────────────────── */
 type ObjectType = "star" | "binary-star" | "pulsar" | "ringed-planet" | "moon" | "nebula" | "beacon" | "unknown-signal" | "black-hole";
 
 const SECTIONS = [
@@ -49,10 +43,6 @@ interface NodeData {
   regionLabel?: string;
 }
 
-/* ────────────────────────────────────────────
-   CONTOUR RINGS — topographic elevation feel
-   (Static, no animation)
-   ──────────────────────────────────────────── */
 function ContourRings({ node }: { node: NodeData }) {
   const isMajor = ["star", "binary-star", "pulsar", "black-hole"].includes(node.type);
   const rings = isMajor
@@ -87,25 +77,13 @@ function ContourRings({ node }: { node: NodeData }) {
   );
 }
 
-/* ────────────────────────────────────────────
-   NODE RENDERERS — celestial bodies
-   ★ origin     → Bright Star (rotating rays)
-   ♄ major      → Saturn (rotating ring system)
-   ✦ checkpoint → Small Star (rotating cross)
-   ◉ branch     → Black Hole (spinning accretion disk)
-   ❋ destination→ Beacon Star (rotating halo)
-   All rotations are pure CSS for GPU compositing.
-   ──────────────────────────────────────────── */
-
-/* ═══ STAR ═══ */
 function renderStarNode(node: NodeData) {
   const x = node.x, y = node.y;
   return (
     <>
-      {/* Outer glow halo */}
+      
       <circle cx={x} cy={y} r="35" fill="url(#star-glow)" />
 
-      {/* Rotating 8-pointed rays */}
       <g className="rm-rotate-star" style={{ transformOrigin: `${x}px ${y}px` }}>
         <line x1={x} y1={y - 25} x2={x} y2={y + 25} stroke="rgba(200,230,255,0.8)" strokeWidth="1.5" />
         <line x1={x - 25} y1={y} x2={x + 25} y2={y} stroke="rgba(200,230,255,0.8)" strokeWidth="1.5" />
@@ -113,13 +91,11 @@ function renderStarNode(node: NodeData) {
         <line x1={x + 18} y1={y - 18} x2={x - 18} y2={y + 18} stroke="rgba(200,230,255,0.5)" strokeWidth="1" />
       </g>
 
-      {/* Inner glow */}
       <circle cx={x} cy={y} r="12" fill="rgba(200,230,255,0.25)" />
-      {/* Bright core */}
+      
       <circle cx={x} cy={y} r="6" fill="#fff" filter="drop-shadow(0 0 5px #fff)" />
       <circle cx={x} cy={y} r="3" fill="rgba(220,240,255,1)" />
 
-      {/* Labels */}
       {!node.isMobile && (
         <>
           <text x={x + 30} y={y - 8} fill={C.label} fontSize="14" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.2em">{node.label}</text>
@@ -130,7 +106,6 @@ function renderStarNode(node: NodeData) {
   );
 }
 
-/* ═══ RINGED PLANET ═══ */
 function renderRingedPlanetNode(node: NodeData) {
   const x = node.x, y = node.y;
   const connLen = 40;
@@ -140,25 +115,22 @@ function renderRingedPlanetNode(node: NodeData) {
 
   return (
     <>
-      {/* Atmospheric glow */}
+      
       <circle cx={x} cy={y} r="50" fill="rgba(100,180,220,0.15)" />
 
-      {/* Rotating ring system — behind planet (lower half) */}
       <g className="rm-rotate-ring" style={{ transformOrigin: `${x}px ${y}px` }}>
-        {/* Outer ring */}
+        
         <ellipse cx={x} cy={y} rx="45" ry="12" fill="none" stroke="rgba(140,200,240,0.4)" strokeWidth="1.5" />
-        {/* Main ring */}
+        
         <ellipse cx={x} cy={y} rx="38" ry="10" fill="none" stroke="rgba(140,200,240,0.8)" strokeWidth="4" />
-        {/* Inner ring (Cassini division gap) */}
+        
         <ellipse cx={x} cy={y} rx="32" ry="8" fill="none" stroke="rgba(140,200,240,0.25)" strokeWidth="1" />
       </g>
 
-      {/* Planet body — sphere shading */}
       <circle cx={x} cy={y} r="18" fill="url(#planet-body)" filter="drop-shadow(0 0 10px rgba(100,180,220,0.4))" />
-      {/* Specular highlight */}
+      
       <circle cx={x - 5} cy={y - 5} r="6" fill="rgba(200,230,255,0.2)" />
 
-      {/* Connector & Labels */}
       {dir !== 0 && !node.isMobile && (
         <line x1={x + dir * 20} y1={y} x2={x + dir * connLen} y2={y} stroke={C.major} strokeWidth="0.8" strokeDasharray="4 4" />
       )}
@@ -172,9 +144,6 @@ function renderRingedPlanetNode(node: NodeData) {
   );
 }
 
-
-
-/* ═══ MOON ═══ */
 function renderMoonNode(node: NodeData) {
   const x = node.x, y = node.y;
   const connLen = 40;
@@ -185,12 +154,11 @@ function renderMoonNode(node: NodeData) {
   return (
     <>
       <circle cx={x} cy={y} r="18" fill="rgba(140,200,240,0.05)" />
-      {/* Moon body */}
-      <circle cx={x} cy={y} r="8" fill="rgba(140,180,220,0.8)" />
-      {/* Shadow overlay to create crescent */}
-      <circle cx={x - 2} cy={y - 2} r="8" fill="rgba(10,15,30,0.6)" />
       
-      {/* Connector & Labels */}
+      <circle cx={x} cy={y} r="8" fill="rgba(140,180,220,0.8)" />
+      
+      <circle cx={x - 2} cy={y - 2} r="8" fill="rgba(10,15,30,0.6)" />
+
       {dir !== 0 && !node.isMobile && (
         <line x1={x + dir * 12} y1={y} x2={x + dir * connLen} y2={y} stroke={C.minor} strokeWidth="0.6" strokeDasharray="3 5" />
       )}
@@ -204,7 +172,6 @@ function renderMoonNode(node: NodeData) {
   );
 }
 
-/* ═══ BINARY STAR ═══ */
 function renderBinaryStarNode(node: NodeData) {
   const x = node.x, y = node.y;
   const connLen = 40;
@@ -215,16 +182,14 @@ function renderBinaryStarNode(node: NodeData) {
   return (
     <>
       <circle cx={x} cy={y} r="45" fill="url(#star-glow)" />
-      {/* Orbit paths */}
-      <circle cx={x} cy={y} r="16" fill="none" stroke="rgba(140,200,240,0.2)" strokeWidth="0.5" strokeDasharray="2 4" />
       
-      {/* Orbiting stars */}
+      <circle cx={x} cy={y} r="16" fill="none" stroke="rgba(140,200,240,0.2)" strokeWidth="0.5" strokeDasharray="2 4" />
+
       <g className="rm-rotate-slow" style={{ transformOrigin: `${x}px ${y}px` }}>
         <circle cx={x - 16} cy={y} r="6" fill="#fff" filter="drop-shadow(0 0 6px rgba(200,230,255,0.8))" />
         <circle cx={x + 16} cy={y} r="4" fill="rgba(180,220,255,1)" filter="drop-shadow(0 0 4px rgba(140,200,240,0.8))" />
       </g>
 
-      {/* Labels positioned above the orbital ring to avoid dock collision */}
       {!node.isMobile && (
         <>
           <text x={x} y={y - 65} fill={C.label} fontSize="14" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.15em" textAnchor="middle">{node.label}</text>
@@ -235,7 +200,6 @@ function renderBinaryStarNode(node: NodeData) {
   );
 }
 
-/* ═══ PULSAR ═══ */
 function renderPulsarNode(node: NodeData) {
   const x = node.x, y = node.y;
   const connLen = 40;
@@ -246,18 +210,15 @@ function renderPulsarNode(node: NodeData) {
   return (
     <>
       <circle cx={x} cy={y} r="35" fill="url(#star-glow-sm)" />
-      
-      {/* Rapidly spinning polar jets */}
+
       <g className="rm-rotate-fast" style={{ transformOrigin: `${x}px ${y}px` }}>
-        {/* Jet beam */}
+        
         <ellipse cx={x} cy={y} rx="3" ry="40" fill="url(#pulsar-jet)" />
       </g>
-      
-      {/* Core */}
+
       <circle cx={x} cy={y} r="3" fill="#fff" filter="drop-shadow(0 0 8px rgba(255,255,255,1))" />
       <circle cx={x} cy={y} r="8" fill="none" stroke="rgba(200,230,255,0.6)" strokeWidth="0.5" />
 
-      {/* Connector & Labels */}
       {dir !== 0 && !node.isMobile && (
         <line x1={x + dir * 15} y1={y} x2={x + dir * connLen} y2={y} stroke={C.major} strokeWidth="0.8" strokeDasharray="4 4" />
       )}
@@ -271,7 +232,6 @@ function renderPulsarNode(node: NodeData) {
   );
 }
 
-/* ═══ NEBULA ═══ */
 function renderNebulaNode(node: NodeData) {
   const x = node.x, y = node.y;
   const connLen = 40;
@@ -286,13 +246,11 @@ function renderNebulaNode(node: NodeData) {
         <circle cx={x + 10} cy={y + 5} r="20" fill="url(#star-glow-sm)" opacity="0.8" />
         <circle cx={x - 2} cy={y + 12} r="18" fill="url(#hole-glow)" opacity="0.5" />
       </g>
-      
-      {/* Newborn stars inside nebula */}
+
       <circle cx={x - 5} cy={y} r="1.5" fill="#fff" />
       <circle cx={x + 6} cy={y + 4} r="1" fill="#fff" opacity="0.6" />
       <circle cx={x - 2} cy={y - 10} r="1" fill="#fff" opacity="0.8" />
 
-      {/* Connector & Labels */}
       {dir !== 0 && !node.isMobile && (
         <line x1={x + dir * 20} y1={y} x2={x + dir * connLen} y2={y} stroke="rgba(180,140,240,0.4)" strokeWidth="0.6" strokeDasharray="2 6" />
       )}
@@ -306,7 +264,6 @@ function renderNebulaNode(node: NodeData) {
   );
 }
 
-/* ═══ UNKNOWN SIGNAL ═══ */
 function renderUnknownSignalNode(node: NodeData) {
   const x = node.x, y = node.y;
   const connLen = 40;
@@ -316,16 +273,14 @@ function renderUnknownSignalNode(node: NodeData) {
 
   return (
     <>
-      {/* Radar rings */}
+      
       <g className="rm-pulse-radar" style={{ transformOrigin: `${x}px ${y}px` }}>
         <circle cx={x} cy={y} r="30" fill="none" stroke="rgba(140,200,240,0.5)" strokeWidth="0.5" />
       </g>
       <circle cx={x} cy={y} r="20" fill="none" stroke="rgba(140,200,240,0.2)" strokeWidth="0.5" strokeDasharray="1 4" />
-      
-      {/* Glitch center */}
+
       <rect x={x - 3} y={y - 3} width="6" height="6" fill="none" stroke="#fff" strokeWidth="1" className="rm-glitch" />
 
-      {/* Connector & Labels */}
       {dir !== 0 && !node.isMobile && (
         <line x1={x + dir * 15} y1={y} x2={x + dir * connLen} y2={y} stroke="rgba(140,200,240,0.3)" strokeWidth="0.6" strokeDasharray="1 3" />
       )}
@@ -339,7 +294,6 @@ function renderUnknownSignalNode(node: NodeData) {
   );
 }
 
-/* ═══ BLACK HOLE ═══ */
 function renderBlackHoleNode(node: NodeData) {
   const x = node.x, y = node.y;
   const connLen = 40;
@@ -349,27 +303,24 @@ function renderBlackHoleNode(node: NodeData) {
 
   return (
     <>
-      {/* Gravitational lensing halos */}
+      
       <circle cx={x} cy={y} r="45" fill="url(#hole-glow)" />
       <circle cx={x} cy={y} r="30" fill="none" stroke="rgba(180,140,240,0.4)" strokeWidth="1.2" />
       <circle cx={x} cy={y} r="20" fill="none" stroke="rgba(180,140,240,0.3)" strokeWidth="0.8" />
 
-      {/* Fast-spinning accretion disk */}
       <g className="rm-rotate-hole" style={{ transformOrigin: `${x}px ${y}px` }}>
-        {/* Outer disk */}
+        
         <ellipse cx={x} cy={y} rx="22" ry="6" fill="none" stroke="rgba(200,150,255,0.4)" strokeWidth="1.2" />
-        {/* Main bright disk */}
+        
         <ellipse cx={x} cy={y} rx="16" ry="4.5" fill="none" stroke="rgba(200,160,255,0.8)" strokeWidth="2.5" />
-        {/* Inner hot ring */}
+        
         <ellipse cx={x} cy={y} rx="11" ry="3" fill="none" stroke="rgba(220,180,255,0.6)" strokeWidth="1.5" />
       </g>
 
-      {/* Event horizon — the void */}
       <circle cx={x} cy={y} r="7" fill="#000" stroke="rgba(160,120,220,0.6)" strokeWidth="1.2" />
-      {/* Singularity glow */}
+      
       <circle cx={x} cy={y} r="2.5" fill="rgba(200,160,255,1)" filter="drop-shadow(0 0 4px #fff)" />
 
-      {/* Connector & Labels */}
       {dir !== 0 && !node.isMobile && (
         <line x1={x + dir * 10} y1={y} x2={x + dir * connLen} y2={y} stroke="rgba(180,140,240,0.4)" strokeWidth="0.6" strokeDasharray="2 6" />
       )}
@@ -383,21 +334,18 @@ function renderBlackHoleNode(node: NodeData) {
   );
 }
 
-/* ═══ BEACON ═══ */
 function renderBeaconNode(node: NodeData) {
   const x = node.x, y = node.y;
   return (
     <>
-      {/* Beacon glow */}
+      
       <circle cx={x} cy={y} r="20" fill="url(#star-glow)" />
 
-      {/* Rotating concentric halo */}
       <g className="rm-rotate-beacon" style={{ transformOrigin: `${x}px ${y}px` }}>
         <circle cx={x} cy={y} r="16" fill="none" stroke="rgba(140,200,240,0.12)" strokeWidth="0.6" strokeDasharray="4 4" />
         <circle cx={x} cy={y} r="12" fill="none" stroke="rgba(140,200,240,0.2)" strokeWidth="0.5" strokeDasharray="2 6" />
       </g>
 
-      {/* Counter-rotating rays */}
       <g className="rm-rotate-star" style={{ transformOrigin: `${x}px ${y}px` }}>
         <line x1={x} y1={y - 14} x2={x} y2={y + 14} stroke="rgba(200,230,255,0.35)" strokeWidth="0.6" />
         <line x1={x - 14} y1={y} x2={x + 14} y2={y} stroke="rgba(200,230,255,0.35)" strokeWidth="0.6" />
@@ -405,11 +353,9 @@ function renderBeaconNode(node: NodeData) {
         <line x1={x + 10} y1={y - 10} x2={x - 10} y2={y + 10} stroke="rgba(200,230,255,0.2)" strokeWidth="0.4" />
       </g>
 
-      {/* Core */}
       <circle cx={x} cy={y} r="4" fill="#fff" />
       <circle cx={x} cy={y} r="2.5" fill="rgba(200,230,255,1)" />
 
-      {/* Labels (below) */}
       {!node.isMobile && (
         <>
           <text x={x} y={y + 30} fill={C.label} fontSize="13" fontFamily="var(--font-mono)" fontWeight="600" letterSpacing="0.2em" textAnchor="middle">{node.label}</text>
@@ -434,16 +380,6 @@ function renderNode(node: NodeData) {
   }
 }
 
-/* ────────────────────────────────────────────
-   MAIN COMPONENT
-   
-   Performance architecture:
-   - ONE passive scroll listener (not ~40 useTransform hooks)
-   - Only triggers React re-render when a node NEWLY enters viewport (~6 times total)
-   - Once all revealed, scroll handler is a no-op
-   - CSS transitions handle all visual animation (GPU-composited)
-   - Zero framer-motion overhead
-   ──────────────────────────────────────────── */
 export default function GlobalRoadmap() {
 const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
   const [nodes, setNodes] = useState<NodeData[]>([]);
@@ -451,7 +387,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
   const [svgHeight, setSvgHeight] = useState(0);
   const [svgWidth, setSvgWidth] = useState(0);
 
-  // ── NEW: Infrastructure Dock State ──
   const [dockTriggered, setDockTriggered] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -470,18 +405,16 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
       }
     }
   };
-  
-  // Track which nodes/segments have been revealed
+
   const [revealed, setRevealed] = useState<Set<string>>(new Set());
   const [revealedSegs, setRevealedSegs] = useState<Set<number>>(new Set());
   const allRevealedRef = useRef(false);
-  // Active node tracking — uses DOM manipulation, not React state, for zero re-render cost
+
   const activeNodeRef = useRef<string | null>(null);
   const activeSegRef = useRef<number | null>(null);
   const spacecraftTargetRef = useRef<string | null>(null);
   const animationRef = useRef<number>(0);
 
-  // ── Layout measurement (unchanged logic) ──
   useEffect(() => {
     const update = () => {
       if (!containerRef.current) return;
@@ -543,12 +476,11 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
           parentId: last.id
         });
 
-        // ── NEW BRANCH: Upcoming Project ──
         const penguIndex = built.findIndex(n => n.id === "pengu");
         if (penguIndex !== -1) {
           const pengu = built[penguIndex];
-          const branchX = isMobile ? w * 0.8 : w * 0.85; // Moved inwards so it doesn't cut off
-          const branchY = pengu.y + 120; // Moved closer vertically so it's immediately visible
+          const branchX = isMobile ? w * 0.8 : w * 0.85;
+          const branchY = pengu.y + 120;
           
           const upcoming: NodeData = {
             id: "upcoming",
@@ -573,7 +505,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
           });
         }
 
-        // ── NEW BRANCH: Experience ──
         const profileIndex = built.findIndex(n => n.id === "profile");
         if (profileIndex !== -1) {
           const profile = built[profileIndex];
@@ -616,7 +547,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
     };
   }, [activeDetour]);
 
-  // Spacecraft position updater for when activeDetour changes without scrolling
   useEffect(() => {
     if (nodes.length === 0) return;
     const targetId = activeDetour || activeNodeRef.current;
@@ -633,9 +563,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
     }
   }, [activeDetour, nodes]);
 
-  // ── Single scroll listener for reveal + active tracking ──
-  // Reveals fire React re-renders (~6 times total)
-  // Active tracking uses direct DOM (zero re-renders)
   useEffect(() => {
     if (nodes.length === 0) return;
     const triggerOffset = window.innerHeight * 0.75;
@@ -649,7 +576,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
         const sy = window.scrollY;
         const viewCenter = sy + window.innerHeight * 0.45;
 
-        // ── Reveal tracking (fires until all revealed) ──
         if (!allRevealedRef.current) {
           setRevealed(prev => {
             let changed = false;
@@ -681,8 +607,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
           });
         }
 
-        // ── Active node tracking (direct DOM, no React re-render) ──
-        // Find the node closest to the viewport center
         let closestId: string | null = null;
         let closestDist = Infinity;
         for (const node of nodes) {
@@ -693,14 +617,13 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
           }
         }
 
-        // Only update DOM if active node changed
         if (closestId !== activeNodeRef.current) {
-          // Remove old active
+
           if (activeNodeRef.current) {
             const oldEl = containerRef.current?.querySelector(`[data-node="${activeNodeRef.current}"]`);
             oldEl?.classList.remove("rm-active");
           }
-          // Apply new active
+
           if (closestId) {
             const newEl = containerRef.current?.querySelector(`[data-node="${closestId}"]`);
             newEl?.classList.add("rm-active");
@@ -711,8 +634,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
           activeNodeRef.current = closestId;
         }
 
-        // Active path segment — the one whose range contains viewCenter
-        // Branches aren't tracked here natively, they will illuminate via DOM logic below
         let activeSeg: number | null = null;
         for (let i = 0; i < segments.length; i++) {
           if (!segments[i].isBranch && viewCenter >= segments[i].startY && viewCenter <= segments[i].endY) {
@@ -732,7 +653,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
           activeSegRef.current = activeSeg;
         }
 
-        // Illuminate branch if parent is active
         segments.forEach((seg, i) => {
           if (seg.isBranch && seg.parentId) {
             const branchEl = containerRef.current?.querySelector(`[data-seg="${i}"]`);
@@ -744,7 +664,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
           }
         });
 
-        // Spacecraft positioning during scroll
         const currentTargetId = activeDetour || closestId;
         if (currentTargetId && currentTargetId !== spacecraftTargetRef.current) {
           const currentId = spacecraftTargetRef.current || nodes[0]?.id;
@@ -773,7 +692,7 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
               const startTime = performance.now();
               
               if (!seg) {
-                // Straight line fallback for skipped nodes
+
                 const tick = (now: number) => {
                   let p = (now - startTime) / duration;
                   if (p > 1) p = 1;
@@ -790,7 +709,7 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
                 };
                 animationRef.current = requestAnimationFrame(tick);
               } else {
-                // Curve tracing
+
                 const pathEl = document.createElementNS("http://www.w3.org/2000/svg", "path");
                 pathEl.setAttribute("d", seg.d);
                 const totalLen = pathEl.getTotalLength();
@@ -803,7 +722,7 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
                   const dist = isForward ? totalLen * ease : totalLen * (1 - ease);
                   
                   const pt = pathEl.getPointAtLength(dist);
-                  // Optional: calculate tangent for rotation
+
                   const pt2 = pathEl.getPointAtLength(Math.min(totalLen, dist + 1));
                   const dx = pt2.x - pt.x;
                   const dy = pt2.y - pt.y;
@@ -825,24 +744,23 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
     };
 
     window.addEventListener("scroll", check, { passive: true });
-    check(); // Initial check
+    check();
     return () => window.removeEventListener("scroll", check);
   }, [nodes, segments]);
 
-  // Handle ESC to exit detour
   useEffect(() => {
     if (!activeDetour) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         exitDetour();
-        // Removed forced handleNavigate(parentId) to prevent scroll jumps
+
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeDetour, exitDetour]);
-  // Pre-calculate detour transforms to re-center the roadmap
+
   let detourDx = 0;
   let detourDy = 0;
   if (activeDetour === "experience" && nodes.length > 0) {
@@ -875,46 +793,43 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            {/* Path gradient */}
+            
             <linearGradient id="journey-grad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%"   stopColor="rgba(140,200,240,0.8)" />
               <stop offset="50%"  stopColor="rgba(130,180,220,0.5)" />
               <stop offset="100%" stopColor="rgba(140,200,240,0.3)" />
             </linearGradient>
 
-            {/* ── Celestial body gradients ── */}
-            {/* Star glow — large */}
             <radialGradient id="star-glow" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="rgba(200,230,255,0.7)" />
               <stop offset="30%" stopColor="rgba(140,200,240,0.3)" />
               <stop offset="100%" stopColor="rgba(140,200,240,0)" />
             </radialGradient>
-            {/* Star glow — small */}
+            
             <radialGradient id="star-glow-sm" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="rgba(180,210,240,0.6)" />
               <stop offset="40%" stopColor="rgba(140,180,220,0.2)" />
               <stop offset="100%" stopColor="rgba(140,180,220,0)" />
             </radialGradient>
-            {/* Saturn planet body — sphere shading */}
+            
             <linearGradient id="planet-body" x1="25%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="rgba(160,210,240,0.85)" />
               <stop offset="40%" stopColor="rgba(80,140,190,0.9)" />
               <stop offset="100%" stopColor="rgba(25,55,85,0.95)" />
             </linearGradient>
-            {/* Black hole glow */}
+            
             <radialGradient id="hole-glow" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="rgba(180,140,240,0.6)" />
               <stop offset="40%" stopColor="rgba(160,120,220,0.2)" />
               <stop offset="100%" stopColor="rgba(160,120,220,0)" />
             </radialGradient>
-            {/* Pulsar Jet */}
+            
             <radialGradient id="pulsar-jet" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
               <stop offset="20%" stopColor="rgba(140,200,240,0.6)" />
               <stop offset="100%" stopColor="rgba(140,200,240,0)" />
             </radialGradient>
 
-            {/* Nebula radial gradients */}
             {nodes.map((n) => (
               <radialGradient key={`ng-${n.id}`} id={`nebula-${n.id}`} cx="50%" cy="50%" r="50%">
                 <stop offset="0%" stopColor="rgba(140,200,240,0.12)" />
@@ -930,12 +845,10 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
             ))}
           </defs>
 
-          {/* ── Layer 0: Topographic contour rings (static) ── */}
           {nodes.map((n) => (
             <ContourRings key={`c-${n.id}`} node={n} />
           ))}
 
-          {/* ── Layer 0.5: Region Labels (Background Text) ── */}
           {nodes.map(n => {
             if (!n.regionLabel) return null;
             const dir = n.xPct > 0.5 ? 1 : -1;
@@ -959,7 +872,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
             )
           })}
 
-          {/* ── Layer 1: Coordinate markers (static) ── */}
           {svgWidth > 0 && (
             <g>
               <text x="16" y="28" fill={C.coord} fontSize="8" fontFamily="var(--font-mono)">47.3812°N</text>
@@ -969,7 +881,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
             </g>
           )}
 
-          {/* ── Layer 2: Static track (very faint base layer) ── */}
           {segments.map((s, i) => (
             <path
               key={`track-${i}`}
@@ -981,7 +892,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
             />
           ))}
 
-          {/* ── Layer 3: Nebula blooms (CSS-transitioned) ── */}
           {nodes.map((n) => {
             const isVisible = revealed.has(n.id);
             const isMajor = ["star", "binary-star", "pulsar", "black-hole"].includes(n.type);
@@ -996,7 +906,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
             );
           })}
 
-          {/* ── Layer 4: Illuminated path segments (CSS-drawn) ── */}
           {segments.map((s, i) => {
             return (
               <g key={`seg-group-${i}`} className="rm-path-group">
@@ -1009,7 +918,7 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
                   pathLength={1}
                   className={`rm-path ${revealedSegs.has(i) ? "rm-visible" : ""} ${s.isBranch ? "rm-branch" : ""}`}
                 />
-                {/* Thick invisible hit area for easy hovering */}
+                
                 <path
                   d={s.d}
                   fill="none"
@@ -1025,7 +934,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
             );
           })}
 
-          {/* ── Layer 4.5: Visual Docking Lines ── */}
           {nodes.map(n => {
             if (["star", "beacon", "unknown-signal"].includes(n.type)) return null;
             const isLeft = n.xPct < 0.5;
@@ -1047,7 +955,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
             )
           })}
 
-          {/* ── Layer 5: Orbital arcs (CSS-transitioned) ── */}
           {nodes.filter(n => ["binary-star", "pulsar", "ringed-planet", "black-hole"].includes(n.type)).map((n) => (
             <g key={`orb-${n.id}`} className={`rm-orbital ${revealed.has(n.id) ? "rm-visible" : ""}`}>
               <ellipse cx={n.x} cy={n.y} rx="55" ry="28" fill="none" stroke={C.major} strokeWidth="0.6" strokeDasharray="3 8" transform={`rotate(-15 ${n.x} ${n.y})`} />
@@ -1055,7 +962,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
             </g>
           ))}
 
-          {/* ── Layer 6: Nodes (CSS-transitioned) ── */}
           {nodes.map((n) => {
             const isSubdued = n.id === "upcoming";
             const isActiveDetourNode = activeDetour === n.id;
@@ -1078,7 +984,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
         </svg>
       )}
 
-      {/* ── NEW: INFRASTRUCTURE DOCK (Rendered precisely over the binary-star node) ── */}
       {nodes.find(n => n.id === "projects") && (
         <InfrastructureDock 
           nodeX={nodes.find(n => n.id === "projects")!.x} 
@@ -1088,7 +993,6 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
       )}
     </div>
 
-    {/* Detour ESC hint */}
     <div 
       className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] transition-all duration-700 ease-out flex items-center gap-2 ${activeDetour ? "opacity-40 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
     >

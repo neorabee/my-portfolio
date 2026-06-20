@@ -31,7 +31,7 @@ body {
   position: relative;
 }
 
-/* Topographic contour background */
+
 body::before {
   content: '';
   position: fixed;
@@ -107,7 +107,7 @@ body::before {
   animation: pulse-glow 6s ease-in-out infinite;
 }
 
-/* Typography styles to reinforce visual rhythm */
+
 h1, h2, h3, h4 {
   letter-spacing: -0.03em;
 }
@@ -124,7 +124,7 @@ p {
   to { transform: rotate(360deg); }
 }
 
-/* ── Performance: Component-level CSS animations ── */
+
 @keyframes bar-pulse {
   0%, 100% { height: var(--bar-from); }
   50% { height: var(--bar-to); }
@@ -140,8 +140,8 @@ p {
   50% { opacity: 1; }
 }
 
-/* ── GlobalRoadmap: CSS transitions replacing ~40 useTransform hooks ── */
-/* Nodes: fade in + scale with overshoot */
+
+
 .rm-node {
   opacity: 0.2;
   transform: scale(0.6);
@@ -153,12 +153,12 @@ p {
   transform: scale(1);
   filter: drop-shadow(0 0 10px rgba(140,200,240,0.4)) brightness(1.1);
 }
-/* Active destination — the "you are here" node */
+
 .rm-node.rm-visible.rm-active {
   opacity: 1;
   filter: drop-shadow(0 0 25px rgba(140,200,240,1)) brightness(1.4);
 }
-/* Subdued nodes (future waypoints) */
+
 .rm-node.rm-visible.rm-subdued {
   opacity: 0.45;
   filter: drop-shadow(0 0 5px rgba(140,200,240,0.2)) grayscale(0.5);
@@ -170,7 +170,7 @@ p {
 
 
 
-/* Nebula blooms: simple fade */
+
 .rm-nebula {
   opacity: 0;
   transition: opacity 1.2s ease-out;
@@ -179,7 +179,7 @@ p {
   opacity: 1;
 }
 
-/* Path segments: draw via stroke-dashoffset */
+
 .rm-path {
   opacity: 0;
   stroke-dasharray: 1;
@@ -190,13 +190,13 @@ p {
   opacity: 0.55;
   stroke-dashoffset: 0;
 }
-/* Active path segment — brighter to show "you are on this route" */
+
 .rm-path.rm-visible.rm-path-active {
   opacity: 1;
   stroke-width: 2.5px;
   filter: drop-shadow(0 0 6px rgba(140,200,240,0.5));
 }
-/* Branch paths */
+
 .rm-path.rm-branch {
   opacity: 0.08;
 }
@@ -207,7 +207,7 @@ p {
   opacity: 0.6;
 }
 
-/* Interactive Roadmap Extensions */
+
 .rm-path-interactive {
   pointer-events: stroke;
   cursor: pointer;
@@ -233,7 +233,7 @@ p {
   opacity: 1 !important;
 }
 
-/* Orbital arcs: subtle fade */
+
 .rm-orbital {
   opacity: 0;
   transition: opacity 1s ease-out 0.3s;
@@ -242,43 +242,43 @@ p {
   opacity: 0.12;
 }
 
-/* ── Celestial body rotations (GPU-composited) ── */
+
 @keyframes rm-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* Star rays — gentle slow rotation */
+
 .rm-rotate-star {
   animation: rm-spin 60s linear infinite;
 }
 
-/* Small star — slightly faster, opposite direction */
+
 .rm-rotate-star-sm {
   animation: rm-spin 45s linear infinite reverse;
 }
 
-/* Saturn rings — medium orbital speed */
+
 .rm-rotate-ring {
   animation: rm-spin 25s linear infinite;
 }
 
-/* Black hole accretion disk — fast dramatic spin */
+
 .rm-rotate-hole {
   animation: rm-spin 12s linear infinite;
 }
 
-/* Beacon halo — slow counter-rotation to rays */
+
 .rm-rotate-beacon {
   animation: rm-spin 35s linear infinite reverse;
 }
 
-/* Binary star orbit — very slow */
+
 .rm-rotate-slow {
   animation: rm-spin 80s linear infinite;
 }
 
-/* Pulsar jets — fast rotation */
+
 .rm-rotate-fast {
   animation: rm-spin 4s linear infinite;
 }
@@ -311,7 +311,7 @@ p {
   animation: rm-glitch-anim 2s infinite;
 }
 
-/* ── Project section: data-flow connectors ── */
+
 @keyframes data-flow {
   from { stroke-dashoffset: 8; }
   to { stroke-dashoffset: 0; }
@@ -319,5 +319,6 @@ p {
 .animate-data-flow {
   animation: data-flow 0.8s linear infinite;
 }
+
 
 

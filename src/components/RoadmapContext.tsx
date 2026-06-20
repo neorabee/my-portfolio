@@ -17,13 +17,12 @@ export function RoadmapProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (activeDetour) {
-      // Lock scroll precisely without losing the scroll position
-      // Calculate scrollbar width to prevent layout shifting when overflow is hidden
+
       const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = 'hidden';
       document.body.style.paddingRight = `${scrollbarWidth}px`;
     } else {
-      // Unlock scroll seamlessly
+
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
     }

@@ -8,8 +8,7 @@ export default function Footer() {
   return (
     <footer className="relative border-t border-white/5 bg-background">
       <div className="mx-auto max-w-7xl px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
-        
-        {/* Left: Branding & Copy */}
+
         <div className="flex items-center gap-4">
           <span className="text-muted-light/20 hidden md:block">|</span>
           <p className="text-xs text-muted font-mono">
@@ -17,7 +16,6 @@ export default function Footer() {
           </p>
         </div>
 
-        {/* Center: Navigation */}
         <div className="flex items-center gap-6">
           {navLinks.map((link) => (
             <a
@@ -30,7 +28,6 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Right: Built with */}
         <div className="text-xs text-muted font-mono">
           rabeeamanachoth@gmail.com
           <br></br>+9746512922

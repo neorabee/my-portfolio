@@ -7,9 +7,6 @@ import MobileSectionHeader from "./MobileSectionHeader";
 import SectionMarker from "./SectionMarker";
 import VMMonitorArtifact from "./VMMonitorArtifact";
 
-/* ────────────────────────────────────────────
-   Architecture Node — system component box
-   ──────────────────────────────────────────── */
 function ArchNode({
   icon, label, title, items, primary,
 }: {
@@ -45,21 +42,17 @@ function ArchNode({
   );
 }
 
-/* ────────────────────────────────────────────
-   Data-flow connector — animated dashes
-   Horizontal on md+, vertical on mobile
-   ──────────────────────────────────────────── */
 function ArchConnector() {
   return (
     <>
-      {/* Horizontal (desktop) */}
+      
       <div className="hidden md:flex items-center justify-center w-8 lg:w-12 shrink-0">
         <svg className="w-full h-4" viewBox="0 0 48 16" fill="none">
           <line x1="0" y1="8" x2="36" y2="8" stroke="rgba(14,165,233,0.3)" strokeWidth="1.5" strokeDasharray="4 4" />
           <polygon points="36,4 44,8 36,12" fill="rgba(14,165,233,0.35)" />
         </svg>
       </div>
-      {/* Vertical (mobile) */}
+      
       <div className="flex md:hidden justify-center py-1">
         <svg className="w-4 h-7" viewBox="0 0 16 28" fill="none">
           <line x1="8" y1="0" x2="8" y2="18" stroke="rgba(14,165,233,0.3)" strokeWidth="1.5" strokeDasharray="3 3" />
@@ -70,10 +63,6 @@ function ArchConnector() {
   );
 }
 
-/* ════════════════════════════════════════════
-   FEATURED PROJECT — Linux Telemetry
-   Engineering case study layout
-   ════════════════════════════════════════════ */
 export default function FeaturedProject() {
   const [artifactPowered, setArtifactPowered] = useState(false);
 
@@ -92,10 +81,8 @@ export default function FeaturedProject() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
 
-          {/* ── Narrative Column ── */}
           <div className={`lg:col-span-5 space-y-8 lg:order-1 transition-all duration-1000 ${artifactPowered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
 
-              {/* Title — cinematic scale */}
 <h2
   id="anchor-projects"
   className="text-xl sm:text-xl md:text-4xl font-bold tracking-tight leading-tight mb-3"
@@ -104,14 +91,12 @@ export default function FeaturedProject() {
   VM <span className="text-cyan-400">Monitoring</span> Dashboard
 </h2>
 
-              {/* Subtitle + version */}
               <div className="flex flex-wrap items-center gap-3 mb-8">
                 <p className="text-lg md:text-xl text-muted-light font-light tracking-wide">
                   Real-Time Node Monitoring
                 </p>
               </div>
 
-              {/* Tech stack capsules */}
               <div className="flex flex-wrap gap-2 mb-10">
                 {["Go", "/proc", "WebSockets", "Next.js"].map((t) => (
                   <span key={t} className="px-3 py-1 rounded-full bg-white/[0.03] border border-white/[0.08] text-xs font-mono text-muted-light">
@@ -120,7 +105,6 @@ export default function FeaturedProject() {
                 ))}
               </div>
 
-              {/* Story */}
               <div className="space-y-6 text-base text-muted-light leading-relaxed">
                 <div>
                   <h4 className="text-foreground font-semibold mb-2">The Problem</h4>
@@ -136,7 +120,6 @@ export default function FeaturedProject() {
                 </div>
               </div>
 
-              {/* CTA */}
               <div className="pt-8">
                 <a
                   href="https://github.com/neorabee/vm_monitoring_agent"
@@ -153,14 +136,12 @@ export default function FeaturedProject() {
               </div>
           </div>
 
-          {/* ── Visualization Column ── */}
           <div className="lg:col-span-7 lg:order-2 relative w-full flex flex-col pt-8 lg:pt-0">
 
             <div className="relative z-10 flex flex-col gap-8">
               
               <VMMonitorArtifact powerOn={artifactPowered} />
-              
-              {/* Panel header */}
+
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Activity size={14} className="text-accent" />
@@ -168,7 +149,6 @@ export default function FeaturedProject() {
                 </div>
               </div>
 
-              {/* ── Architecture Flow ── */}
               <div className="flex flex-col md:flex-row items-stretch gap-0">
                 <ArchNode
                   icon={<Cpu size={15} />}
@@ -193,7 +173,6 @@ export default function FeaturedProject() {
                 />
               </div>
 
-              {/* ── Metrics Row ── */}
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {[
                   { value: "< 1ms", label: "Latency" },
@@ -207,7 +186,6 @@ export default function FeaturedProject() {
                 ))}
               </div>
 
-              {/* ── Data ticker ── */}
 <div className="h-11 border-b border-white/10 flex items-center relative opacity-60">
   <div className="flex gap-8 whitespace-nowrap font-mono text-[10px] sm:text-xs text-muted">
     <span className="flex items-center gap-2">
