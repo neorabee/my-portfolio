@@ -23,7 +23,7 @@ const C = {
 type ObjectType = "star" | "binary-star" | "pulsar" | "ringed-planet" | "moon" | "nebula" | "beacon" | "unknown-signal" | "black-hole";
 
 const SECTIONS = [
-  { id: "hero",         type: "star"           as const, label: "ORIGIN",       sub: "Starting Point",    xPct: 0.50, yPct: -1, regionLabel: "" },
+  { id: "hero",         type: "star"           as const, label: "ORIGIN",       sub: "Starting Point",    xPct: 0.5, yPct: -1, regionLabel: "" },
   { id: "projects",     type: "binary-star"    as const, label: "PROJECTS",     sub: "Selected Works",    xPct: 0.08, yPct: 0.46, regionLabel: "" },
   { id: "pengu",        type: "pulsar"         as const, label: "AUTONOMY",     sub: "Pengu OS",          xPct: 0.92, yPct: 0.36, regionLabel: "" },
   { id: "profile",      type: "moon"           as const, label: "PROFILE",      sub: "Systems & Stack",   xPct: 0.08, yPct: 0.60, regionLabel: "" },

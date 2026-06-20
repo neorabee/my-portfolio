@@ -173,28 +173,7 @@ export default function FeaturedProject() {
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-2 sm:gap-3">
-                {[
-                  { value: "< 1ms", label: "Latency" },
-                  { value: "144 Hz", label: "Refresh Rate" },
-                  { value: "0%", label: "Poll Overhead" },
-                ].map((m) => (
-                  <div key={m.label} className="text-left py-2 border-l border-white/10 pl-4">
-                    <div className="text-base sm:text-lg md:text-xl font-bold text-accent font-mono leading-tight">{m.value}</div>
-                    <div className="text-[9px] sm:text-[10px] text-muted font-mono uppercase tracking-wider mt-1">{m.label}</div>
-                  </div>
-                ))}
-              </div>
-
-<div className="h-11 border-b border-white/10 flex items-center relative opacity-60">
-  <div className="flex gap-8 whitespace-nowrap font-mono text-[10px] sm:text-xs text-muted">
-    <span className="flex items-center gap-2">
-      <span className="text-blue-400">MEM:</span> 12.2GB
-      <span className="text-emerald-400 ml-3">CPU:</span> 22.5%
-      <span className="text-purple-400 ml-3">NET:</span> 5.1Mb/s
-    </span>
-  </div>
-</div>
+              
 
             </div>
           </div>

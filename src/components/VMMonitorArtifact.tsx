@@ -202,7 +202,7 @@ export default function SystemDashboard({ powerOn = true }: { powerOn?: boolean 
   return (
     <div
       className={`w-full bg-[#050507] rounded-2xl font-mono p-6 md:p-8 transition-all duration-1000 ${
-        powerOn ? "opacity-100" : "opacity-30 grayscale saturate-0"
+        powerOn ? "opacity-100" : "opacity-10 grayscale saturate-0"
       }`}
     >
       <div className="flex flex-wrap items-start justify-between gap-4 pb-6 mb-6 border-b border-white/[0.06]">
