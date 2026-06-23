@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import MobileSectionHeader from "./MobileSectionHeader";
 import { useRoadmap } from "./RoadmapContext";
 import Experience from "./Experience";
@@ -47,6 +47,16 @@ export default function Profile() {
 
   return (
     <section id="profile" className="py-32 md:py-40 relative group">
+      {/* Background expanded vertically and softly masked to integrate seamlessly with the site */}
+      <div 
+        className="absolute -inset-y-64 inset-x-0 pointer-events-none z-0"
+        style={{
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+          maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+        }}
+      >
+        <SpaceVisual />
+      </div>
 
       <div className="relative w-full overflow-hidden perspective-[2000px]">
 
@@ -58,8 +68,8 @@ export default function Profile() {
             pointerEvents: isExperienceActive ? 'none' : 'auto'
           }}
         >
-          <div className="mx-auto max-w-7xl px-6 relative z-10 lg:pl-[22%]">
-            <SectionMarker label="[ PROFILE ]" />
+          <div className="mx-auto max-w-7xl px-6 relative z-10 lg:pl-[5%] lg:pr-[10%]">
+            <SectionMarker label="PROFILE" />
             <MobileSectionHeader title="PROFILE" subtitle="SYSTEMS & STACK" icon="saturn" />
 
             <div>
@@ -166,5 +176,157 @@ export default function Profile() {
          {renderExperience && <Experience />}
       </div>
     </section>
+  );
+}
+
+function useScrollParallax(strength = 1) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const rect = el.getBoundingClientRect();
+        const vh = window.innerHeight || 1;
+        const centered = (rect.top + rect.height / 2 - vh / 2) / vh;
+        el.style.setProperty("--parallax", (centered * strength).toFixed(3));
+      });
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [strength]);
+
+  return ref;
+}
+
+function Starfield() {
+  const seedStars = (count: number, seed: number) => {
+    const stars: { x: number; y: number; r: number; o: number }[] = [];
+    let s = seed;
+    const rand = () => {
+      s = (s * 9301 + 49297) % 233280;
+      return s / 233280;
+    };
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: rand() * 100,
+        y: rand() * 100,
+        r: rand() * 0.6 + 0.3,
+        o: rand() * 0.5 + 0.15,
+      });
+    }
+    return stars;
+  };
+
+  const far = seedStars(70, 7);
+  const near = seedStars(28, 19);
+
+  return (
+    <>
+      <svg
+        className="absolute inset-0 h-full w-full [animation:starDriftFar_120s_linear_infinite]"
+        style={{ willChange: "transform" }}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
+        {far.map((star, i) => (
+          <circle
+            key={`f-${i}`}
+            cx={star.x}
+            cy={star.y}
+            r={star.r}
+            fill="#cdd3e0"
+            opacity={star.o}
+          />
+        ))}
+      </svg>
+      <svg
+        className="absolute inset-0 h-full w-full [animation:starDriftNear_80s_linear_infinite]"
+        style={{ willChange: "transform" }}
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid slice"
+        aria-hidden="true"
+      >
+        {near.map((star, i) => (
+          <circle
+            key={`n-${i}`}
+            cx={star.x}
+            cy={star.y}
+            r={star.r + 0.2}
+            fill="#e8e2d3"
+            opacity={star.o * 0.8}
+          />
+        ))}
+      </svg>
+    </>
+  );
+}
+
+function SpaceVisual() {
+  const parallaxRef = useScrollParallax(10);
+
+  return (
+    <div
+      ref={parallaxRef}
+      className="relative h-full w-full overflow-hidden"
+      style={{
+        transform: "translateY(calc(var(--parallax, 0) * 1px))",
+      }}
+      aria-hidden="true"
+    >
+      <Starfield />
+
+      <div className="absolute left-1/2 top-1/2 aspect-square w-[120%] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full sm:w-[85%]">
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background: `radial-gradient(circle at 32% 30%, #2f2c29 0%, #1c1a18 14%, #0e0d0c 32%, #050505 52%, #020202 72%)`,
+          }}
+        />
+        <div
+          className="absolute -inset-[15%] opacity-70 [animation:planetRotate_160s_linear_infinite]"
+          style={{
+            background: `repeating-linear-gradient(95deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0.22) 18px, rgba(0,0,0,0) 40px, rgba(232,226,211,0.035) 58px, rgba(0,0,0,0) 80px)`,
+          }}
+        />
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            boxShadow:
+              "inset -40px -30px 90px rgba(0,0,0,0.75), inset 20px 10px 60px rgba(232,226,211,0.04)",
+          }}
+        />
+        <div
+          className="absolute inset-0 rounded-full mix-blend-screen opacity-[0.55]"
+          style={{
+            background:
+              "radial-gradient(circle at 14% 22%, rgba(232,219,181,0.25) 0%, rgba(180,150,100,0.08) 9%, rgba(120,95,70,0.02) 16%, transparent 30%)",
+          }}
+        />
+      </div>
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[120%] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 sm:w-[85%]"
+        style={{
+          boxShadow: "0 0 60px 1px rgba(140,112,72,0.08)",
+        }}
+      />
+
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, transparent 20%, #000000 80%)",
+        }}
+      />
+    </div>
   );
 }

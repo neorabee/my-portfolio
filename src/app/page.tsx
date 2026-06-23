@@ -6,7 +6,6 @@ import Profile from "@/components/Profile";
 import Explorations from "@/components/Explorations";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-
 import GlobalRoadmap from "@/components/GlobalRoadmap";
 
 import { RoadmapProvider } from "@/components/RoadmapContext";
@@ -18,12 +17,11 @@ export default function Home() {
       <main className="relative overflow-x-hidden">
         <GlobalRoadmap />
         <Hero />
+        <Profile />
         <FeaturedProject />
         <ProjectsGrid />
-        <Profile />
         <Contact />
         <Explorations />
-
       </main>
       <Footer />
     </RoadmapProvider>

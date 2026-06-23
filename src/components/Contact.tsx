@@ -66,7 +66,7 @@ export default function Contact() {
                 { label: "GitHub", href: "https://github.com/neorabee" },
                 { label: "LinkedIn", href: "https://www.linkedin.com/in/rabee-aman-achoth-609606376/" },
                 { label: "Medium", href: "https://medium.com/@rabeeaman07" },
-                { label: "Instagram", href: "https://instagram.com/rabeelim" },
+                { label: "Instagram", href: "https://instagram.com/rabeeaman" },
               ].map((link) => (
                 <a
                   key={link.label}

@@ -2,39 +2,92 @@
 
 import { useEffect, useRef, useState } from "react";
 
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$*?!+";
+
 export default function SectionMarker({ label }: { label: string }) {
+  const cleanLabel = label.replace(/[\[\]]/g, "").trim().toUpperCase();
   const ref = useRef<HTMLDivElement>(null);
-  const [isActive, setIsActive] = useState(false);
+
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const [displayText, setDisplayText] = useState(cleanLabel);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsActive(entry.isIntersecting);
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+        }
       },
-      { threshold: 0.5, rootMargin: "-100px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -100px 0px" }
     );
-    
+
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, []);
+  }, [hasAnimated]);
 
-  const cleanLabel = label.replace(/[\[\]]/g, '').trim();
+  useEffect(() => {
+    if (!hasAnimated) return;
+
+    let frame = 0;
+    const totalFrames = 20; // 800ms total
+    const interval = setInterval(() => {
+      frame++;
+
+      if (frame >= totalFrames) {
+        clearInterval(interval);
+        setDisplayText(cleanLabel);
+        return;
+      }
+
+      const progress = frame / totalFrames;
+      const resolvedCount = Math.floor(progress * cleanLabel.length);
+
+      let scrambled = "";
+      for (let i = 0; i < cleanLabel.length; i++) {
+        if (i < resolvedCount || cleanLabel[i] === " ") {
+          scrambled += cleanLabel[i];
+        } else {
+          scrambled += CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
+      }
+      setDisplayText(scrambled);
+    }, 40);
+
+    return () => clearInterval(interval);
+  }, [hasAnimated, cleanLabel]);
 
   return (
-    <div ref={ref} className={`mb-8 md:mb-12 transition-all duration-1000 ${isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-      <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-950/40 to-violet-950/40 border border-white/10 shadow-[0_0_20px_rgba(34,211,238,0.1)_inset,0_0_15px_rgba(34,211,238,0.05)] backdrop-blur-md relative group overflow-hidden">
-
-        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/5 to-transparent group-hover:animate-[shimmer_2s_infinite]" />
-
-        <div className="relative flex items-center justify-center w-2 h-2">
-          <div className="absolute w-2 h-2 rounded-full bg-cyan-400 animate-ping opacity-60" />
-          <div className="relative w-1.5 h-1.5 rounded-full bg-cyan-300 shadow-[0_0_8px_#22d3ee]" />
-        </div>
+    <div ref={ref} className="mb-4 md:mb-6 flex">
+      <span className="font-mono text-sm tracking-[0.25em] text-white font-bold flex items-center relative w-max py-1">
         
-        <span className="font-sans text-xs sm:text-sm font-semibold tracking-[0.15em] uppercase bg-gradient-to-r from-cyan-50 to-white bg-clip-text text-transparent drop-shadow-[0_2px_10px_rgba(255,255,255,0.2)]">
-          {cleanLabel}
+        {/* Left Bracket */}
+        <span
+          className={`text-accent absolute top-0 bottom-0 flex items-center transition-all duration-[800ms] ease-[cubic-bezier(0.2,1,0.2,1)] ${
+            hasAnimated ? "left-0" : "left-1/2 -translate-x-[8px]"
+          }`}
+        >
+          [
         </span>
-      </div>
+
+        {/* Decipher Text with Clip Path reveal */}
+        <span
+          className="px-3.5 transition-all duration-[800ms] ease-[cubic-bezier(0.2,1,0.2,1)]"
+          style={{
+            clipPath: hasAnimated ? "inset(0 0 0 0)" : "inset(0 50% 0 50%)",
+          }}
+        >
+          {displayText}
+        </span>
+
+        {/* Right Bracket */}
+        <span
+          className={`text-accent absolute top-0 bottom-0 flex items-center justify-end transition-all duration-[800ms] ease-[cubic-bezier(0.2,1,0.2,1)] ${
+            hasAnimated ? "right-0" : "right-1/2 translate-x-[8px]"
+          }`}
+        >
+          ]
+        </span>
+      </span>
     </div>
   );
 }

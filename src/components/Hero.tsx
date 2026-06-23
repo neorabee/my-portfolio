@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import { GithubIcon, LinkedinIcon, MediumIcon, InstagramIcon } from "./icons";
+import { GithubIcon, LinkedinIcon, MediumIcon } from "./icons";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -46,7 +46,6 @@ const Hero = () => {
             { icon: GithubIcon, href: "https://github.com/neorabee", label: "GitHub" },
             { icon: LinkedinIcon, href: "https://www.linkedin.com/in/rabee-aman-achoth-609606376/", label: "LinkedIn" },
             { icon: MediumIcon, href: "https://medium.com/@rabeeaman07", label: "Medium" },
-            { icon: InstagramIcon, href: "https://instagram.com/rabeelim", label: "Instagram" },
           ].map((item) => (
             <a
               key={item.label}

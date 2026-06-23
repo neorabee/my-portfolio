@@ -24,10 +24,10 @@ type ObjectType = "star" | "binary-star" | "pulsar" | "ringed-planet" | "moon" |
 
 const SECTIONS = [
   { id: "hero",         type: "star"           as const, label: "ORIGIN",       sub: "Starting Point",    xPct: 0.5, yPct: -1, regionLabel: "" },
+  { id: "profile",      type: "moon"           as const, label: "PROFILE",      sub: "Systems & Stack",   xPct: 0.70, yPct: 0.20, regionLabel: "" },
   { id: "projects",     type: "binary-star"    as const, label: "PROJECTS",     sub: "Selected Works",    xPct: 0.08, yPct: 0.46, regionLabel: "" },
   { id: "pengu",        type: "pulsar"         as const, label: "AUTONOMY",     sub: "Pengu OS",          xPct: 0.92, yPct: 0.36, regionLabel: "" },
-  { id: "profile",      type: "moon"           as const, label: "PROFILE",      sub: "Systems & Stack",   xPct: 0.08, yPct: 0.60, regionLabel: "" },
-  { id: "contact",      type: "beacon"         as const, label: "CONTACT",      sub: "Secure Channel",    xPct: 0.90, yPct: 0.35, regionLabel: "" },
+  { id: "contact",      type: "beacon"         as const, label: "CONTACT",      sub: "Secure Channel",    xPct: 0.10, yPct: 0.35, regionLabel: "" },
   { id: "explorations", type: "nebula"         as const, label: "EXPLORATIONS", sub: "Side Quests",       xPct: 0.82, yPct: 0.45, regionLabel: "" },
 ];
 
@@ -454,10 +454,17 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
         for (let i = 1; i < built.length; i++) {
           const p = built[i - 1];
           const c = built[i];
-          const cp1x = p.x;
-          const cp1y = p.y + (c.y - p.y) * 0.45;
-          const cp2x = c.x;
-          const cp2y = p.y + (c.y - p.y) * 0.55;
+          let cp1x = p.x;
+          let cp1y = p.y + (c.y - p.y) * 0.45;
+          let cp2x = c.x;
+          let cp2y = p.y + (c.y - p.y) * 0.55;
+
+          if (p.id === "profile" && c.id === "projects") {
+            const arcOffset = isMobile ? 80 : 180;
+            cp1x = p.x + arcOffset;
+            cp2x = c.x + arcOffset;
+          }
+
           segs.push({
             d: `M ${p.x},${p.y} C ${cp1x},${cp1y} ${cp2x},${cp2y} ${c.x},${c.y}`,
             startY: p.y,
@@ -508,8 +515,8 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
         const profileIndex = built.findIndex(n => n.id === "profile");
         if (profileIndex !== -1) {
           const profile = built[profileIndex];
-          const expX = isMobile ? w * 0.85 : w * 0.25;
-          const expY = profile.y + 100;
+          const expX = isMobile ? profile.x + 80 : profile.x + 120;
+          const expY = profile.y - 60;
           
           const experience: NodeData = {
             id: "experience",
@@ -525,9 +532,9 @@ const { activeDetour, enterDetour, exitDetour, detourOriginY } = useRoadmap();
           built.push(experience);
           
           segs.push({
-            d: `M ${profile.x},${profile.y} C ${profile.x},${profile.y + 50} ${expX},${expY - 50} ${expX},${expY}`,
-            startY: profile.y,
-            endY: expY,
+            d: `M ${profile.x},${profile.y} C ${profile.x + 40},${profile.y} ${expX},${expY + 40} ${expX},${expY}`,
+            startY: expY,
+            endY: profile.y,
             isBranch: true,
             parentId: "profile",
             targetId: "experience"
